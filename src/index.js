@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 //import registerServiceWorker from "./registerServiceWorker";
 import { observe } from "./components/Game";
-import Board from "./components/Board";
+import Garden from "./components/Garden";
 
 const rootEl = document.getElementById("root");
 
 observe(knightPosition =>
-  ReactDOM.render(<Board knightPosition={knightPosition} />, rootEl)
+  ReactDOM.render(<Garden knightPosition={knightPosition} />, rootEl)
 );
 //registerServiceWorker();

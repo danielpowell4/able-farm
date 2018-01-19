@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class Square extends Component {
+  static propTypes = {
+    black: PropTypes.bool,
+  };
+
   render() {
     const { black } = this.props;
     const fill = black ? "black" : "white";
@@ -25,9 +29,5 @@ class Square extends Component {
     );
   }
 }
-
-Square.propTypes = {
-  black: PropTypes.bool,
-};
 
 export default Square;
