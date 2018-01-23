@@ -23,7 +23,7 @@ class Garden extends Component {
         <GardenSquare
           x={x}
           y={y}
-          handleSquareClick={this.handleSquareClick.bind(this, { x, y })}
+          movePlant={this.props.movePlant.bind(null, { x, y })}
         >
           {this.renderPlant(x, y)}
         </GardenSquare>
@@ -36,10 +36,6 @@ class Garden extends Component {
     if (x === plantX && y === plantY) {
       return <Plant />;
     }
-  };
-
-  handleSquareClick = position => {
-    this.props.movePlant(position);
   };
 
   render() {

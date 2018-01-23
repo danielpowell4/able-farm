@@ -14,13 +14,11 @@ const squareTarget = {
   },
 };
 
-function collect(connect, monitor) {
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-    canDrop: monitor.canDrop(),
-  };
-}
+const collect = (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop(),
+});
 
 class GardenSquare extends Component {
   renderOverlay(color) {
@@ -41,13 +39,19 @@ class GardenSquare extends Component {
   }
 
   render() {
-    const { handleSquareClick, x, y, children } = this.props;
+    const { x, y, children, connectDropTarget } = this.props;
     const dark = (x + y) % 2 === 1;
 
-    return (
-      <Square dark={dark} handleSquareClick={handleSquareClick}>
-        {children}
-      </Square>
+    return connectDropTarget(
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Square dark={dark}>{children}</Square>
+      </div>
     );
   }
 }
