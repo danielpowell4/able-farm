@@ -10,7 +10,7 @@ const squareTarget = {
   },
 
   drop(props) {
-    props.movePlant(props.x, props.y);
+    props.movePlant({ x: props.x, y: props.y });
   },
 };
 

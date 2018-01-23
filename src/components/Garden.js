@@ -20,11 +20,7 @@ class Garden extends Component {
     const y = Math.floor(i / 8);
     return (
       <div key={i} style={{ width: "12.5%", height: "12.5%" }}>
-        <GardenSquare
-          x={x}
-          y={y}
-          movePlant={this.props.movePlant.bind(null, { x, y })}
-        >
+        <GardenSquare x={x} y={y} movePlant={this.props.movePlant}>
           {this.renderPlant(x, y)}
         </GardenSquare>
       </div>
