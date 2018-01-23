@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import GardenSquare from "./GardenSquare";
@@ -14,17 +15,21 @@ class Garden extends Component {
     }),
   };
 
-  renderSquare(i) {
+  renderSquare = i => {
     const x = i % 8;
     const y = Math.floor(i / 8);
     return (
       <div key={i} style={{ width: "12.5%", height: "12.5%" }}>
-        <GardenSquare x={x} y={y}>
-          {this.renderPiece(x, y)}
+        <GardenSquare
+          x={x}
+          y={y}
+          handleSquareClick={this.handleSquareClick.bind(this, { x, y })}
+        >
+          {this.renderPlant(x, y)}
         </GardenSquare>
       </div>
     );
-  }
+  };
 
   renderPlant = (x, y) => {
     const { x: plantX, y: plantY } = this.props.plantPosition;
@@ -60,4 +65,13 @@ class Garden extends Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(Garden);
+const mapStateToProps = ({ garden: { position: plantPosition } }) => ({
+  plantPosition,
+});
+
+const mapDispatchToProps = dispatch => ({
+  movePlant: position => dispatch(movePlant(position)),
+});
+
+Garden = DragDropContext(HTML5Backend)(Garden);
+export default connect(mapStateToProps, mapDispatchToProps)(Garden);

@@ -7,7 +7,7 @@ class Square extends Component {
   };
 
   render() {
-    const { dark } = this.props;
+    const { children, dark, handleSquareClick } = this.props;
     const fill = dark ? "#784631" : "#a15e39";
     const stroke = dark ? "#5f831e" : "#97be30";
 
@@ -23,8 +23,9 @@ class Square extends Component {
           justifyContent: "center",
           alignItems: "center",
         }}
+        onClick={handleSquareClick}
       >
-        {this.props.children}
+        {children}
       </div>
     );
   }

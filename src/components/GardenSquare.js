@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Square from "./Square";
-import { canMoveKnight, moveKnight } from "./Game";
 import { ItemTypes } from "./Constants";
 import { DropTarget } from "react-dnd";
 
 const squareTarget = {
   canDrop(props) {
-    return canMoveKnight(props.x, props.y);
+    return true;
   },
 
   drop(props) {
-    moveKnight(props.x, props.y);
+    props.movePlant(props.x, props.y);
   },
 };
 
@@ -42,22 +41,13 @@ class GardenSquare extends Component {
   }
 
   render() {
-    const { x, y, connectDropTarget, isOver, canDrop } = this.props;
+    const { handleSquareClick, x, y, children } = this.props;
     const dark = (x + y) % 2 === 1;
 
-    return connectDropTarget(
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <Square dark={dark}>{this.props.children}</Square>
-        {isOver && !canDrop && this.renderOverlay("red")}
-        {!isOver && canDrop && this.renderOverlay("green")}
-        {isOver && canDrop && this.renderOverlay("yellow")}
-      </div>
+    return (
+      <Square dark={dark} handleSquareClick={handleSquareClick}>
+        {children}
+      </Square>
     );
   }
 }
@@ -70,6 +60,4 @@ GardenSquare.propTypes = {
   canDrop: PropTypes.bool.isRequired,
 };
 
-export default DropTarget(ItemTypes.KNIGHT, squareTarget, collect)(
-  GardenSquare
-);
+export default DropTarget(ItemTypes.PLANT, squareTarget, collect)(GardenSquare);

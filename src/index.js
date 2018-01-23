@@ -1,13 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
 //import registerServiceWorker from "./registerServiceWorker";
-import { observe } from "./components/Game";
+import { Provider } from "react-redux";
 import Garden from "./components/Garden";
+import gardenStore from "./stores/gardenStore";
 import "./index.css";
 
 const rootEl = document.getElementById("root");
 
-observe(knightPosition =>
-  ReactDOM.render(<Garden knightPosition={knightPosition} />, rootEl)
-);
+document.addEventListener("DOMContentLoaded", function() {
+  if (rootEl !== null) {
+    ReactDOM.render(
+      <Provider store={gardenStore}>
+        <Garden />
+      </Provider>,
+      rootEl
+    );
+  }
+});
+
 //registerServiceWorker();
