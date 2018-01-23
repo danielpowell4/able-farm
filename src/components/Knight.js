@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { ItemTypes } from "./Constants";
 import { DragSource } from "react-dnd";
-import horseImage from "./images/dragHorse";
+import corn from "./images/corn.png";
 
 const knightSource = {
   beginDrag(props) {
@@ -19,7 +19,7 @@ const collect = (connect, monitor) => ({
 class Knight extends Component {
   componentDidMount() {
     const img = new Image();
-    img.src = horseImage;
+    img.src = corn;
     img.onload = () => this.props.connectDragPreview(img);
   }
 
@@ -34,7 +34,7 @@ class Knight extends Component {
           cursor: "move",
         }}
       >
-        ♘
+        🌱
       </div>
     );
   }

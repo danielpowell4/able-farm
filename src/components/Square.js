@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 
 class Square extends Component {
   static propTypes = {
-    black: PropTypes.bool,
+    dark: PropTypes.bool,
   };
 
   render() {
-    const { black } = this.props;
-    const fill = black ? "black" : "white";
-    const stroke = black ? "white" : "black";
+    const { dark } = this.props;
+    const fill = dark ? "#784631" : "#a15e39";
+    const stroke = dark ? "#5f831e" : "#97be30";
 
     return (
       <div
