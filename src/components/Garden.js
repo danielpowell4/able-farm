@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import GardenSquare from "./GardenSquare";
-import Knight from "./Knight";
-import { canMoveKnight, moveKnight } from "./Game";
+import Plant from "./Plant";
+import { movePlant } from "../modules/garden/actions";
 
 class Garden extends Component {
   static propTypes = {
-    knightPosition: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+    plantPosition: PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired,
+    }),
   };
 
   renderSquare(i) {
@@ -23,18 +26,16 @@ class Garden extends Component {
     );
   }
 
-  renderPiece(x, y) {
-    const [knightX, knightY] = this.props.knightPosition;
-    if (x === knightX && y === knightY) {
-      return <Knight />;
+  renderPlant = (x, y) => {
+    const { x: plantX, y: plantY } = this.props.plantPosition;
+    if (x === plantX && y === plantY) {
+      return <Plant />;
     }
-  }
+  };
 
-  handleSquareClick(toX, toY) {
-    if (canMoveKnight(toX, toY)) {
-      moveKnight(toX, toY);
-    }
-  }
+  handleSquareClick = position => {
+    this.props.movePlant(position);
+  };
 
   render() {
     const squares = [];

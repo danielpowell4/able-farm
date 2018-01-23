@@ -4,7 +4,7 @@ import { ItemTypes } from "./Constants";
 import { DragSource } from "react-dnd";
 import corn from "./images/corn.png";
 
-const knightSource = {
+const plantSource = {
   beginDrag(props) {
     return {};
   },
@@ -16,7 +16,7 @@ const collect = (connect, monitor) => ({
   isDragging: monitor.isDragging(),
 });
 
-class Knight extends Component {
+class Plant extends Component {
   componentDidMount() {
     const img = new Image();
     img.src = corn;
@@ -34,15 +34,21 @@ class Knight extends Component {
           cursor: "move",
         }}
       >
-        🌱
+        <span
+          role="img"
+          description="Plant emoji"
+          aria-label="Drag plant to move"
+        >
+          🌱
+        </span>
       </div>
     );
   }
 }
 
-Knight.propTypes = {
+Plant.propTypes = {
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
 };
 
-export default DragSource(ItemTypes.KNIGHT, knightSource, collect)(Knight);
+export default DragSource(ItemTypes.PLANT, plantSource, collect)(Plant);
