@@ -8,8 +8,21 @@ import Plant from "./Plant";
 import { movePlant } from "../modules/plants/actions";
 
 class Garden extends Component {
+  constructor(props) {
+    super(props);
+
+    this.squareWidth = `${100 / props.width}%`;
+    this.squareHeight = `${100 / props.height}%`;
+  }
+
   static propTypes = {
     plants: PropTypes.array,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  };
+  static defaultProps = {
+    width: 8,
+    height: 8,
   };
 
   findPlantByPosition = (x, y) => {
@@ -18,13 +31,14 @@ class Garden extends Component {
     );
   };
 
-  renderSquare = i => {
-    const x = i % 8;
-    const y = Math.floor(i / 8);
+  renderSquare = (x, y) => {
     const plant = this.findPlantByPosition(x, y);
 
     return (
-      <div key={i} style={{ width: "12.5%", height: "12.5%" }}>
+      <div
+        key={`${x}:${y}`}
+        style={{ width: this.squareWidth, height: this.squareHeight }}
+      >
         <GardenSquare
           x={x}
           y={y}
@@ -38,9 +52,13 @@ class Garden extends Component {
   };
 
   render() {
+    const { width, height } = this.props;
     const squares = [];
-    for (let i = 0; i < 64; i++) {
-      squares.push(this.renderSquare(i));
+
+    for (let x = 1; x <= height; x++) {
+      for (let y = 1; y <= width; y++) {
+        squares.push(this.renderSquare(x, y));
+      }
     }
 
     return (
