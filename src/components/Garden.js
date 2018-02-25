@@ -45,11 +45,21 @@ class Garden extends Component {
       ) {
         if (x !== i || y !== j) {
           let p = this.findPlantByPosition(i, j);
-          if (!!p) neighbors.push(p.name);
+          if (!!p)
+            neighbors.push({
+              name: p.name,
+              distance: this.getDistance(x, y, i, j),
+            });
         }
       }
     }
     return neighbors;
+  };
+
+  getDistance = (x1, y1, x2, y2) => {
+    const s1 = Math.abs(x2 - x1);
+    const s2 = Math.abs(y2 - y1);
+    return Math.sqrt(Math.pow(s1, 2) + Math.pow(s2, 2));
   };
 
   renderSquare = (x, y) => {

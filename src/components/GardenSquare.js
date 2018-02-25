@@ -11,7 +11,9 @@ const hasOverlap = (setA, setB) => {
 const squareTarget = {
   canDrop(props, monitor) {
     let { enemies } = monitor.getItem();
-    return !props.hasPlant && !hasOverlap(props.neighbors, enemies);
+    return (
+      !props.hasPlant && !hasOverlap(props.neighbors.map(n => n.name), enemies)
+    );
   },
 
   drop(props, monitor) {
@@ -70,10 +72,10 @@ class GardenSquare extends Component {
     } = this.props;
     const dark = (x + y) % 2 === 1;
     let encouragePlacement = !!activePlant
-      ? hasOverlap(neighbors, activePlant.friends)
+      ? hasOverlap(neighbors.map(n => n.name), activePlant.friends)
       : false;
     let discouragePlacement = !!activePlant
-      ? hasOverlap(neighbors, activePlant.enemies)
+      ? hasOverlap(neighbors.map(n => n.name), activePlant.enemies)
       : false;
 
     return connectDropTarget(
@@ -104,7 +106,12 @@ GardenSquare.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   hasPlant: PropTypes.bool.isRequired,
-  neighbors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  neighbors: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      distance: PropTypes.number,
+    })
+  ).isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isOver: PropTypes.bool.isRequired,
   canDrop: PropTypes.bool.isRequired,
