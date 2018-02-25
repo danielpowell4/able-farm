@@ -1,9 +1,9 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
-import garden from "../modules/garden/reducer";
+import plants from "../modules/plants/reducer";
 
-const rootReducer = combineReducers({ garden });
+const rootReducer = combineReducers({ plants });
 
 export default createStore(
   rootReducer,

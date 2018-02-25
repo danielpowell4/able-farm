@@ -6,7 +6,9 @@ import corn from "./images/corn.png";
 
 const plantSource = {
   beginDrag(props) {
-    return {};
+    return {
+      id: props.id, // for dropping
+    };
   },
 };
 
@@ -47,6 +49,7 @@ class Plant extends Component {
 }
 
 Plant.propTypes = {
+  id: PropTypes.number.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
 };

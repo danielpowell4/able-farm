@@ -5,12 +5,13 @@ import { ItemTypes } from "./Constants";
 import { DropTarget } from "react-dnd";
 
 const squareTarget = {
-  canDrop(props) {
-    return true;
+  canDrop(props, monitor) {
+    return !props.hasPlant;
   },
 
-  drop(props) {
-    props.movePlant({ x: props.x, y: props.y });
+  drop(props, monitor) {
+    let { id } = monitor.getItem();
+    props.movePlant(id, { x: props.x, y: props.y });
   },
 };
 
@@ -50,6 +51,7 @@ class GardenSquare extends Component {
       >
         <Square dark={dark}>{children}</Square>
         {isOver && canDrop && this.renderOverlay("green")}
+        {isOver && !canDrop && this.renderOverlay("red")}
       </div>
     );
   }
@@ -58,6 +60,7 @@ class GardenSquare extends Component {
 GardenSquare.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
+  hasPlant: PropTypes.bool.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isOver: PropTypes.bool.isRequired,
   canDrop: PropTypes.bool.isRequired,
