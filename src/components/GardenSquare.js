@@ -85,17 +85,16 @@ class GardenSquare extends Component {
         }}
       >
         <Square dark={dark}>{children}</Square>
-        {isOver && canDrop && this.renderOverlay("isOver")}
+        {isOver &&
+          (canDrop
+            ? this.renderOverlay("isOver")
+            : this.renderOverlay("notAllowed"))}
         {!isOver &&
-          canDrop &&
-          !encouragePlacement &&
-          this.renderOverlay("neutral")}
-        {!isOver &&
-          canDrop &&
-          encouragePlacement &&
-          this.renderOverlay("friend")}
+          (canDrop &&
+            (encouragePlacement
+              ? this.renderOverlay("friend")
+              : this.renderOverlay("neutral")))}
         {!isOver && discouragePlacement && this.renderOverlay("enemy")}
-        {isOver && !canDrop && this.renderOverlay("notAllowed")}
       </div>
     );
   }
