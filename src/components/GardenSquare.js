@@ -4,14 +4,14 @@ import Square from "./Square";
 import { ItemTypes } from "./Constants";
 import { DropTarget } from "react-dnd";
 
-const hasEnemies = (neighbors, enemies) => {
-  return !!neighbors.filter(x => enemies.includes(x)).length;
+const hasOverlap = (setA, setB) => {
+  return !!setA.filter(x => setB.includes(x)).length;
 };
 
 const squareTarget = {
   canDrop(props, monitor) {
     let { enemies } = monitor.getItem();
-    return !props.hasPlant && !hasEnemies(props.neighbors, enemies);
+    return !props.hasPlant && !hasOverlap(props.neighbors, enemies);
   },
 
   drop(props, monitor) {
@@ -20,11 +20,14 @@ const squareTarget = {
   },
 };
 
-const collect = (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop(),
-});
+const collect = (connect, monitor) => {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
+    activePlant: monitor.getItem(),
+  };
+};
 
 class GardenSquare extends Component {
   constructor(props) {
@@ -34,6 +37,8 @@ class GardenSquare extends Component {
       friend: "#25C183",
       neutral: "#B5EBB1",
       enemy: "#DF574F",
+      notAllowed: "#F9433E",
+      isOver: "#40BDFF",
     };
   }
 
@@ -53,8 +58,23 @@ class GardenSquare extends Component {
   );
 
   render() {
-    const { x, y, children, connectDropTarget, isOver, canDrop } = this.props;
+    const {
+      x,
+      y,
+      children,
+      connectDropTarget,
+      isOver,
+      activePlant,
+      canDrop,
+      neighbors,
+    } = this.props;
     const dark = (x + y) % 2 === 1;
+    let encouragePlacement = !!activePlant
+      ? hasOverlap(neighbors, activePlant.friends)
+      : false;
+    let discouragePlacement = !!activePlant
+      ? hasOverlap(neighbors, activePlant.enemies)
+      : false;
 
     return connectDropTarget(
       <div
@@ -65,9 +85,17 @@ class GardenSquare extends Component {
         }}
       >
         <Square dark={dark}>{children}</Square>
-        {isOver && canDrop && this.renderOverlay("friend")}
-        {!isOver && canDrop && this.renderOverlay("neutral")}
-        {isOver && !canDrop && this.renderOverlay("enemy")}
+        {isOver && canDrop && this.renderOverlay("isOver")}
+        {!isOver &&
+          canDrop &&
+          !encouragePlacement &&
+          this.renderOverlay("neutral")}
+        {!isOver &&
+          canDrop &&
+          encouragePlacement &&
+          this.renderOverlay("friend")}
+        {!isOver && discouragePlacement && this.renderOverlay("enemy")}
+        {isOver && !canDrop && this.renderOverlay("notAllowed")}
       </div>
     );
   }
