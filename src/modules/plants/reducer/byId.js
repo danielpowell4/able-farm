@@ -8,6 +8,7 @@ const initialState = {
       x: 3,
       y: 4,
     },
+    enemies: ["p2"],
   },
   2: {
     id: 2,
@@ -16,6 +17,7 @@ const initialState = {
       x: 5,
       y: 7,
     },
+    enemies: ["p1"],
   },
 };
 

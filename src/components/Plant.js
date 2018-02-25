@@ -8,6 +8,7 @@ const plantSource = {
   beginDrag(props) {
     return {
       id: props.id, // for dropping
+      enemies: props.enemies, // for comparison
     };
   },
 };
@@ -50,6 +51,7 @@ class Plant extends Component {
 
 Plant.propTypes = {
   id: PropTypes.number.isRequired,
+  enemies: PropTypes.arrayOf(PropTypes.string).isRequired,
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
 };

@@ -4,9 +4,14 @@ import Square from "./Square";
 import { ItemTypes } from "./Constants";
 import { DropTarget } from "react-dnd";
 
+const hasEnemies = (neighbors, enemies) => {
+  return !!neighbors.filter(x => enemies.includes(x)).length;
+};
+
 const squareTarget = {
   canDrop(props, monitor) {
-    return !props.hasPlant;
+    let { enemies } = monitor.getItem();
+    return !props.hasPlant && !hasEnemies(props.neighbors, enemies);
   },
 
   drop(props, monitor) {
@@ -22,7 +27,17 @@ const collect = (connect, monitor) => ({
 });
 
 class GardenSquare extends Component {
-  renderOverlay = color => (
+  constructor(props) {
+    super(props);
+
+    this.overLayColors = {
+      friend: "#25C183",
+      neutral: "#B5EBB1",
+      enemy: "#DF574F",
+    };
+  }
+
+  renderOverlay = relation => (
     <div
       style={{
         position: "absolute",
@@ -31,8 +46,8 @@ class GardenSquare extends Component {
         height: "100%",
         width: "100%",
         zIndex: 1,
-        opacity: 0.5,
-        backgroundColor: color,
+        opacity: 0.8,
+        backgroundColor: this.overLayColors[relation],
       }}
     />
   );
@@ -50,8 +65,9 @@ class GardenSquare extends Component {
         }}
       >
         <Square dark={dark}>{children}</Square>
-        {isOver && canDrop && this.renderOverlay("green")}
-        {isOver && !canDrop && this.renderOverlay("red")}
+        {isOver && canDrop && this.renderOverlay("friend")}
+        {!isOver && canDrop && this.renderOverlay("neutral")}
+        {isOver && !canDrop && this.renderOverlay("enemy")}
       </div>
     );
   }
@@ -61,6 +77,7 @@ GardenSquare.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   hasPlant: PropTypes.bool.isRequired,
+  neighbors: PropTypes.arrayOf(PropTypes.string).isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   isOver: PropTypes.bool.isRequired,
   canDrop: PropTypes.bool.isRequired,

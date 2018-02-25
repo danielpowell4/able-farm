@@ -31,8 +31,30 @@ class Garden extends Component {
     );
   };
 
+  gatherNeighbors = (x, y) => {
+    let neighbors = [];
+    for (
+      let i = Math.max(1, x - 1);
+      i <= Math.min(x + 1, this.props.width);
+      i++
+    ) {
+      for (
+        let j = Math.max(1, y - 1);
+        j <= Math.min(y + 1, this.props.height);
+        j++
+      ) {
+        if (x !== i || y !== j) {
+          let p = this.findPlantByPosition(i, j);
+          if (!!p) neighbors.push(p.name);
+        }
+      }
+    }
+    return neighbors;
+  };
+
   renderSquare = (x, y) => {
     const plant = this.findPlantByPosition(x, y);
+    const neighbors = this.gatherNeighbors(x, y);
 
     return (
       <div
@@ -44,6 +66,7 @@ class Garden extends Component {
           y={y}
           hasPlant={!!plant}
           movePlant={this.props.movePlant}
+          neighbors={neighbors}
         >
           {!!plant && <Plant {...plant} />}
         </GardenSquare>
