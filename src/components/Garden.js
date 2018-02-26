@@ -34,13 +34,13 @@ class Garden extends Component {
   gatherNeighbors = (x, y) => {
     let neighbors = [];
     for (
-      let i = Math.max(1, x - 1);
-      i <= Math.min(x + 1, this.props.width);
+      let i = Math.max(1, x - 3);
+      i <= Math.min(x + 3, this.props.width);
       i++
     ) {
       for (
-        let j = Math.max(1, y - 1);
-        j <= Math.min(y + 1, this.props.height);
+        let j = Math.max(1, y - 3);
+        j <= Math.min(y + 3, this.props.height);
         j++
       ) {
         if (x !== i || y !== j) {
