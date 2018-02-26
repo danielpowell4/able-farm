@@ -5,8 +5,8 @@ const initialState = {
     id: 1,
     name: "p1",
     position: {
-      x: 3,
-      y: 4,
+      x: 2,
+      y: 2,
     },
     friends: ["p3"],
     enemies: ["p2"],
@@ -15,8 +15,8 @@ const initialState = {
     id: 2,
     name: "p2",
     position: {
-      x: 5,
-      y: 7,
+      x: 6,
+      y: 6,
     },
     friends: [],
     enemies: ["p1"],
@@ -27,6 +27,16 @@ const initialState = {
     position: {
       x: 8,
       y: 6,
+    },
+    friends: ["p1"],
+    enemies: [],
+  },
+  4: {
+    id: 4,
+    name: "p3",
+    position: {
+      x: 8,
+      y: 8,
     },
     friends: ["p1"],
     enemies: [],

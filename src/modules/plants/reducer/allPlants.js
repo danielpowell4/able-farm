@@ -1,6 +1,6 @@
 import {} from "../constants";
 
-const initialAllPlantsState = [1, 2, 3];
+const initialAllPlantsState = [1, 2, 3, 4];
 
 const allPlants = (state = initialAllPlantsState, { type, data }) => {
   switch (type) {
