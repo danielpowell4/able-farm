@@ -4,8 +4,18 @@ import Square from "./Square";
 import { ItemTypes } from "./Constants";
 import { DropTarget } from "react-dnd";
 
-const hasOverlap = (setA, setB) => {
-  return !!setA.filter(x => setB.includes(x)).length;
+const getRating = (neighbors, setB) => {
+  let relationPoints = 0;
+  let distPoints = 0;
+
+  neighbors.forEach(({ name, distance }) => {
+    if (setB.includes(name)) {
+      relationPoints += 25;
+      distPoints += 200 / (distance * 2);
+    }
+  });
+
+  return relationPoints + distPoints;
 };
 
 const squareTarget = {
@@ -34,24 +44,23 @@ class GardenSquare extends Component {
     super(props);
 
     this.overLayColors = {
-      friend: "#25C183",
-      neutral: "#B5EBB1",
+      friend: "#5DA449",
       enemy: "#DF574F",
       notAllowed: "#F9433E",
       isOver: "#40BDFF",
     };
   }
 
-  renderOverlay = relation => (
+  renderOverlay = (relation, strength = 160) => (
     <div
       style={{
         position: "absolute",
         top: 0,
         left: 0,
-        height: "100%",
-        width: "100%",
+        height: "calc(100% - 2px)",
+        width: "calc(100% - 2px)",
         zIndex: 1,
-        opacity: 0.8,
+        opacity: strength / 200,
         backgroundColor: this.overLayColors[relation],
       }}
     />
@@ -68,13 +77,6 @@ class GardenSquare extends Component {
       canDrop,
       neighbors,
     } = this.props;
-    const dark = (x + y) % 2 === 1;
-    let encouragePlacement = !!activePlant
-      ? hasOverlap(neighbors.map(n => n.name), activePlant.friends)
-      : false;
-    let discouragePlacement = !!activePlant
-      ? hasOverlap(neighbors.map(n => n.name), activePlant.enemies)
-      : false;
 
     return connectDropTarget(
       <div
@@ -84,17 +86,23 @@ class GardenSquare extends Component {
           height: "100%",
         }}
       >
-        <Square dark={dark}>{children}</Square>
+        <Square>{children}</Square>
         {isOver &&
           (canDrop
             ? this.renderOverlay("isOver")
             : this.renderOverlay("notAllowed"))}
         {!isOver &&
           (canDrop &&
-            (encouragePlacement
-              ? this.renderOverlay("friend")
-              : this.renderOverlay("neutral")))}
-        {!isOver && discouragePlacement && this.renderOverlay("enemy")}
+            this.renderOverlay(
+              "friend",
+              getRating(neighbors, activePlant.friends)
+            ))}
+        {!isOver &&
+          (canDrop &&
+            this.renderOverlay(
+              "enemy",
+              getRating(neighbors, activePlant.enemies)
+            ))}
       </div>
     );
   }

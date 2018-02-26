@@ -1,22 +1,18 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 class Square extends Component {
-  static propTypes = {
-    dark: PropTypes.bool,
-  };
-
   render() {
-    const { children, dark } = this.props;
-    const fill = dark ? "#784631" : "#a15e39";
-    const stroke = dark ? "#5f831e" : "#97be30";
+    const { children } = this.props;
 
     return (
       <div
         style={{
           position: "relative",
-          backgroundColor: fill,
-          color: stroke,
+          boxShadow: "-2px -2px 0 #665235",
+          backgroundColor: "#6F532A",
+          backgroundColor: "#836B32",
+          backgroundImage: "url(http://cssgridgarden.com//images/dirt.svg)",
+          backgroundSize: "calc(100% - 4px)",
           width: "100%",
           height: "100%",
           display: "flex",
