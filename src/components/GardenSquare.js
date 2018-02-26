@@ -11,9 +11,7 @@ const hasOverlap = (setA, setB) => {
 const squareTarget = {
   canDrop(props, monitor) {
     let { enemies } = monitor.getItem();
-    return (
-      !props.hasPlant && !hasOverlap(props.neighbors.map(n => n.name), enemies)
-    );
+    return !props.hasPlant;
   },
 
   drop(props, monitor) {
