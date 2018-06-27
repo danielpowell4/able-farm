@@ -1,4 +1,5 @@
-body {
+body,
+#root {
   margin: 0;
   padding: 0;
   display: flex;
@@ -6,4 +7,23 @@ body {
   align-items: 0;
   height: 100%;
   width: 100%;
+}
+
+.App-wrapper {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.Nav {
+  margin: 0;
+  padding: 0.25rem;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+
+.Nav a {
+  padding: 0 0.5rem 0;
 }

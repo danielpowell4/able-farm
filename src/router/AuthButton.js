@@ -1,12 +1,11 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { fakeAuth } from "./utils";
 
 const AuthButton = withRouter(
   ({ history }) =>
     fakeAuth.isAuthenticated ? (
       <p>
-        Welcome!{" "}
         <button
           onClick={() => {
             fakeAuth.signout(() => history.push("/"));
@@ -16,7 +15,7 @@ const AuthButton = withRouter(
         </button>
       </p>
     ) : (
-      <p>You are not logged in.</p>
+      <Link to="/login">Login</Link>
     )
 );
 
