@@ -5,15 +5,14 @@ import { fakeAuth } from "./utils";
 const AuthButton = withRouter(
   ({ history }) =>
     fakeAuth.isAuthenticated ? (
-      <p>
-        <button
-          onClick={() => {
-            fakeAuth.signout(() => history.push("/"));
-          }}
-        >
-          Sign out
-        </button>
-      </p>
+      <a
+        href="#"
+        onClick={() => {
+          fakeAuth.signout(() => history.push("/"));
+        }}
+      >
+        Sign out
+      </a>
     ) : (
       <Link to="/login">Login</Link>
     )
