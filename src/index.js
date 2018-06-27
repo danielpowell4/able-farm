@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 //import registerServiceWorker from "./registerServiceWorker";
 import { Provider } from "react-redux";
-import Garden from "./components/Garden";
+import App from "./App";
 import gardenStore from "./stores/gardenStore";
 import "./index.css";
 
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (rootEl !== null) {
     ReactDOM.render(
       <Provider store={gardenStore}>
-        <Garden />
+        <App />
       </Provider>,
       rootEl
     );
