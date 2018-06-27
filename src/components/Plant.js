@@ -4,6 +4,12 @@ import { ItemTypes } from "./Constants";
 import { DragSource } from "react-dnd";
 import corn from "./images/corn.png";
 
+const componentName = props => (
+  <div>
+    <image src={corn} />
+  </div>
+);
+
 const plantSource = {
   beginDrag(props) {
     return {
