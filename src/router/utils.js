@@ -19,8 +19,10 @@ const parseJSON = payload => {
 };
 
 export const Auth = {
-  isAuthenticated: false,
-  auth_token: null,
+  auth_token: localStorage.getItem("auth_token"),
+  isAuthenticated() {
+    return !!this.auth_token;
+  },
   authenticate(email, password) {
     return fetch(`${apiUrl}/auth/login`, {
       method: "POST",
@@ -29,15 +31,15 @@ export const Auth = {
     })
       .then(checkStatus)
       .then(parseJSON)
-      .then(auth_token => {
+      .then(({ auth_token }) => {
+        localStorage.setItem("auth_token", auth_token);
         this.auth_token = auth_token;
-        this.isAuthenticated = true;
-        return true;
+        return Promise.resolve();
       });
   },
   signout(cb) {
-    this.isAuthenticated = false;
+    localStorage.removeItem("auth_token");
     this.auth_token = null;
-    cb();
+    return cb();
   }
 };

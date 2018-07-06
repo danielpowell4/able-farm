@@ -4,7 +4,7 @@ import { Auth } from "../router/utils";
 
 class Login extends React.Component {
   state = {
-    redirectToReferrer: false,
+    redirectToReferrer: Auth.isAuthenticated(),
     email: "",
     password: ""
   };

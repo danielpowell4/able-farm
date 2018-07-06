@@ -4,7 +4,7 @@ import { Auth } from "./utils";
 
 const AuthButton = withRouter(
   ({ history }) =>
-    Auth.isAuthenticated ? (
+    Auth.isAuthenticated() ? (
       <a
         href="#"
         onClick={() => {
