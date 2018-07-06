@@ -1,14 +1,14 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { fakeAuth } from "./utils";
+import { Auth } from "./utils";
 
 const AuthButton = withRouter(
   ({ history }) =>
-    fakeAuth.isAuthenticated ? (
+    Auth.isAuthenticated ? (
       <a
         href="#"
         onClick={() => {
-          fakeAuth.signout(() => history.push("/"));
+          Auth.signout(() => history.push("/"));
         }}
       >
         Sign out

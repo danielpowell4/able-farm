@@ -1,16 +1,31 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { fakeAuth } from "../router/utils";
+import { Auth } from "../router/utils";
 
 class Login extends React.Component {
   state = {
-    redirectToReferrer: false
+    redirectToReferrer: false,
+    email: "",
+    password: ""
   };
 
-  login = () => {
-    fakeAuth.authenticate(() => {
-      this.setState({ redirectToReferrer: true });
+  validateForm = () => {
+    const { email, password } = this.state;
+    return email.length > 0 && password.length > 0;
+  };
+
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
     });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const { email, password } = this.state;
+    Auth.authenticate(email, password)
+      .then(() => this.setState({ redirectToReferrer: true }))
+      .catch(error => alert(error));
   };
 
   render() {
@@ -24,7 +39,32 @@ class Login extends React.Component {
     return (
       <div>
         <p>You must log in to view the page at {from.pathname}</p>
-        <button onClick={this.login}>Log in</button>
+        <div className="LoginForm">
+          <form onSubmit={this.handleSubmit}>
+            <div className="input-wrapper">
+              <label htmlFor="email">Email</label>
+              <input
+                autoFocus
+                id="email"
+                type="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="input-wrapper">
+              <label htmlFor="password">Password</label>
+              <input
+                value={this.state.password}
+                onChange={this.handleChange}
+                type="password"
+                id="password"
+              />
+            </div>
+            <button disabled={!this.validateForm()} type="submit">
+              Login
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
