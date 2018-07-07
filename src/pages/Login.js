@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { Auth } from "../router/utils";
 
 class Login extends React.Component {
@@ -63,6 +63,9 @@ class Login extends React.Component {
             <button disabled={!this.validateForm()} type="submit">
               Login
             </button>
+            <Link to="/signup" replace>
+              Signup
+            </Link>
           </form>
         </div>
       </div>

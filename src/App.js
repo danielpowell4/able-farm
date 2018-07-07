@@ -6,7 +6,7 @@ import {
   Switch
 } from "react-router-dom";
 import { AuthButton, PrivateRoute } from "./router";
-import { Login, Home, Garden } from "./pages";
+import { Login, Signup, Home, Garden } from "./pages";
 
 const Nav = _ => (
   <nav className="Nav">
@@ -23,8 +23,9 @@ const App = () => (
       <Nav />
       <div className="App__body">
         <Switch>
-          <Route path="/login" component={Login} />
-          <PrivateRoute path="/garden" component={Garden} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <PrivateRoute exact path="/garden" component={Garden} />
           <Route path="/" component={Home} />
         </Switch>
       </div>

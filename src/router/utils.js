@@ -32,7 +32,19 @@ export const Auth = {
       .then(checkStatus)
       .then(parseJSON)
       .then(({ auth_token }) => {
-        localStorage.setItem("auth_token", auth_token);
+        this.auth_token = auth_token;
+        return Promise.resolve();
+      });
+  },
+  signup(name, email, password, password_confirmation) {
+    return fetch(`${apiUrl}/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `name=${name}&email=${email}&password=${password}&password_confirmation=${password_confirmation}`
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(({ auth_token }) => {
         this.auth_token = auth_token;
         return Promise.resolve();
       });
