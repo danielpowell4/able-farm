@@ -1,7 +1,7 @@
 import fetch from "cross-fetch";
 const apiUrl = "//localhost:5000";
 
-const checkStatus = response => {
+export const checkStatus = response => {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -11,7 +11,7 @@ const checkStatus = response => {
   throw error;
 };
 
-const parseJSON = payload => {
+export const parseJSON = payload => {
   if (typeof payload === "string") {
     return JSON.parse(payload);
   }
@@ -33,6 +33,7 @@ export const Auth = {
       .then(parseJSON)
       .then(({ auth_token }) => {
         this.auth_token = auth_token;
+        localStorage.setItem("auth_token", auth_token);
         return Promise.resolve();
       });
   },
@@ -46,6 +47,7 @@ export const Auth = {
       .then(parseJSON)
       .then(({ auth_token }) => {
         this.auth_token = auth_token;
+        localStorage.setItem("auth_token", auth_token);
         return Promise.resolve();
       });
   },
@@ -55,3 +57,16 @@ export const Auth = {
     return cb();
   }
 };
+
+export const headers = {
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: Auth.auth_token
+  }
+};
+
+export const GET = path =>
+  fetch(`${apiUrl}${path}`, headers)
+    .then(checkStatus)
+    .then(parseJSON);

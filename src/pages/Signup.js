@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { Auth } from "../router/utils";
+import { Auth } from "../lib/utils";
 
 class Signup extends React.Component {
   state = {
