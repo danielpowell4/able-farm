@@ -62,7 +62,7 @@ export const headers = {
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: Auth.auth_token
+    Authorization: Auth.auth_token || localStorage.getItem("auth_token")
   }
 };
 
