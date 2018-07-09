@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
-import GardenSquare from "../components/GardenSquare";
-import Plant from "../components/Plant";
+import GardenSquare from "./GardenSquare";
+import Plant from "./Plant";
 import { movePlant } from "../modules/plants/actions";
 
 class Garden extends Component {
