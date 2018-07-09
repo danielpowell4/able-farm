@@ -1,5 +1,5 @@
 import fetch from "cross-fetch";
-const apiUrl = "//localhost:5000";
+const apiUrl = "";
 
 export const checkStatus = response => {
   if (response.status >= 200 && response.status < 300) {
