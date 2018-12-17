@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import Square from "./Square";
 import { ItemTypes } from "./Constants";
@@ -39,7 +39,7 @@ const collect = (connect, monitor) => {
   };
 };
 
-class GardenSquare extends Component {
+class GardenSquare extends PureComponent {
   constructor(props) {
     super(props);
 

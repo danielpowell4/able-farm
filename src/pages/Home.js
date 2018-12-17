@@ -12,7 +12,7 @@ const LoggedOutHome = _ => (
 
 class LoggedInHome extends Component {
   state = {
-    gardens: []
+    gardens: [],
   };
 
   componentDidMount() {
@@ -55,7 +55,7 @@ class LoggedInHome extends Component {
   }
 }
 
-const Home = _ =>
-  Auth.isAuthenticated() ? <LoggedInHome /> : <LoggedOutHome />;
+const Home = ({ authenticated, ...rest }) =>
+  authenticated ? <LoggedInHome {...rest} /> : <LoggedOutHome />;
 
 export default Home;

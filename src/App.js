@@ -1,40 +1,115 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  NavLink,
-  Switch
+  Redirect,
+  Switch,
 } from "react-router-dom";
-import { AuthButton, PrivateRoute } from "./lib";
-import { Login, Signup, Home, GardenNewPage, GardenShowPage } from "./pages";
+import { PrivateRoute } from "./lib";
 
-const Nav = _ => (
-  <nav className="Nav">
-    <div className="NavLinks">
-      <NavLink to="/">Home</NavLink>
-    </div>
-    <AuthButton />
-  </nav>
-);
-const App = () => (
-  <Router>
-    <div className="App-wrapper">
-      <Nav />
-      <div className="App__body">
+import app, { db } from "./base";
+
+import {
+  LogIn,
+  LogOut,
+  SignUp,
+  Home,
+  GardenNewPage,
+  GardenShowPage,
+} from "./pages";
+
+// TODO: Loader fancy
+const Loader = _ => <p>Loading...</p>;
+class App extends Component {
+  state = { loading: true, authenticated: false, currentUser: null };
+
+  componentDidMount() {
+    this.subscribeToAuthState();
+  }
+
+  subscribeToAuthState = () => {
+    app.auth().onAuthStateChanged(this.handleAuthChange);
+  };
+
+  getUser = uid => {
+    return db
+      .collection("users")
+      .doc(uid)
+      .get()
+      .then(snapshot => {
+        this.setState({
+          authenticated: true,
+          currentUser: snapshot.data(),
+          loading: false,
+        });
+      });
+  };
+
+  handleAuthChange = authUser => {
+    if (authUser) {
+      this.getUser(authUser.uid);
+    } else {
+      this.setState({
+        authenticated: false,
+        currentUser: null,
+        loading: false,
+      });
+    }
+  };
+
+  render() {
+    const { authenticated, loading, currentUser } = this.state;
+    const { uid: userId, name, email } = authenticated
+      ? currentUser
+      : { uid: null, name: null, email: "" };
+
+    if (loading) {
+      return (
+        <div>
+          <Loader />
+        </div>
+      );
+    }
+
+    return (
+      <Router>
         <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <PrivateRoute exact path="/gardens/new" component={GardenNewPage} />
+          <PrivateRoute
+            exact
+            path="/"
+            component={Home}
+            authenticated={authenticated}
+            userId={userId}
+            name={name}
+            email={email}
+          />
+          <PrivateRoute
+            exact
+            path="/gardens/new"
+            component={GardenNewPage}
+            authenticated={authenticated}
+          />
           <PrivateRoute
             exact
             path="/gardens/:garden_id"
             component={GardenShowPage}
+            authenticated={authenticated}
           />
-          <Route path="/" component={Home} />
+          <Route
+            exact
+            path="/login"
+            render={() => (authenticated ? <Redirect to="/" /> : <LogIn />)}
+          />
+          <Route exact path="/logout" render={LogOut} />
+          <Route
+            exact
+            path="/signup"
+            render={() => (authenticated ? <Redirect to="/" /> : <SignUp />)}
+          />
         </Switch>
-      </div>
-    </div>
-  </Router>
-);
+      </Router>
+    );
+  }
+}
 
 export default App;

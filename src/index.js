@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
 import gardenStore from "./stores/gardenStore";
-import "./index.css";
+import "./index.scss";
 
 const rootEl = document.getElementById("root");
 

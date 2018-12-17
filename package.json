@@ -4,11 +4,14 @@
   "private": true,
   "dependencies": {
     "cross-fetch": "^2.2.2",
+    "firebase": "^5.7.0",
+    "node-sass": "^4.11.0",
     "react": "^16.2.0",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
+    "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
@@ -16,7 +19,7 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "react-scripts": "1.1.0"
+    "react-scripts": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,5 +27,11 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:3001/"
+  "proxy": "http://localhost:3001/",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
