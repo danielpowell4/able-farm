@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Auth, GET } from "../lib/utils";
+import { GET } from "../lib/utils";
 
 const LoggedOutHome = _ => (
   <section>

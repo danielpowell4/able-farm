@@ -18,11 +18,11 @@ class Garden extends Component {
   static propTypes = {
     plants: PropTypes.array,
     width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
+    height: PropTypes.number.isRequired,
   };
   static defaultProps = {
     width: 8,
-    height: 8
+    height: 8,
   };
 
   findPlantByPosition = (x, y) => {
@@ -48,7 +48,7 @@ class Garden extends Component {
           if (!!p)
             neighbors.push({
               name: p.name,
-              distance: this.getDistance(x, y, i, j)
+              distance: this.getDistance(x, y, i, j),
             });
         }
       }
@@ -102,7 +102,7 @@ class Garden extends Component {
           display: "flex",
           flexWrap: "wrap",
           border: "1px solid gray",
-          margin: "1rem auto"
+          margin: "1rem auto",
         }}
       >
         {squares}
@@ -112,12 +112,15 @@ class Garden extends Component {
 }
 
 const mapStateToProps = ({ plants: { byId: plantsById, allPlants } }) => ({
-  plants: allPlants.map(p => plantsById[p])
+  plants: allPlants.map(p => plantsById[p]),
 });
 
 const mapDispatchToProps = dispatch => ({
-  movePlant: (id, position) => dispatch(movePlant(id, position))
+  movePlant: (id, position) => dispatch(movePlant(id, position)),
 });
 
 Garden = DragDropContext(HTML5Backend)(Garden);
-export default connect(mapStateToProps, mapDispatchToProps)(Garden);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Garden);

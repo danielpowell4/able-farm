@@ -9,7 +9,6 @@ class Square extends Component {
         style={{
           position: "relative",
           boxShadow: "-2px -2px 0 #665235",
-          backgroundColor: "#6F532A",
           backgroundColor: "#836B32",
           backgroundImage: "url(http://cssgridgarden.com//images/dirt.svg)",
           backgroundSize: "calc(100% - 4px)",

@@ -20,7 +20,7 @@ const getRating = (neighbors, setB) => {
 
 const squareTarget = {
   canDrop(props, monitor) {
-    let { enemies } = monitor.getItem();
+    // let { enemies } = monitor.getItem();
     return !props.hasPlant;
   },
 
@@ -68,8 +68,6 @@ class GardenSquare extends PureComponent {
 
   render() {
     const {
-      x,
-      y,
       children,
       connectDropTarget,
       isOver,
