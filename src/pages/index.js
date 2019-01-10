@@ -1,6 +1,6 @@
-export { default as LogIn } from "./LogIn";
-export { default as LogOut } from "./LogOut";
-export { default as SignUp } from "./SignUp";
+export { default as Login } from "./Login";
+export { default as Logout } from "./Logout";
+export { default as Signup } from "./Signup";
 
 export { default as Home } from "./Home";
 export { default as GardenNewPage } from "./gardens/NewPage";

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { GET } from "../lib/utils";
+import { UserConsumer, UserContext } from "../contexts/UserContext";
 
 const LoggedOutHome = _ => (
   <section>
@@ -11,6 +12,8 @@ const LoggedOutHome = _ => (
 );
 
 class LoggedInHome extends Component {
+  static contextType = UserContext;
+
   state = {
     gardens: [],
   };
@@ -27,9 +30,12 @@ class LoggedInHome extends Component {
 
   render() {
     const { gardens } = this.state;
+    const { onLogout } = this.context;
+
     return (
       <section>
         <h1>Home</h1>
+        <button onClick={onLogout}>Logout</button>
         <h3>You are logged in.</h3>
         <p>Todo: insert a dashboard.</p>
         <div>
@@ -55,7 +61,10 @@ class LoggedInHome extends Component {
   }
 }
 
-const Home = ({ authenticated, ...rest }) =>
-  authenticated ? <LoggedInHome {...rest} /> : <LoggedOutHome />;
+const Home = _ => (
+  <UserConsumer>
+    {({ user }) => (user ? <LoggedInHome /> : <LoggedOutHome />)}
+  </UserConsumer>
+);
 
 export default Home;

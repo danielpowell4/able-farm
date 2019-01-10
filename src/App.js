@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -6,110 +6,59 @@ import {
   Switch,
 } from "react-router-dom";
 import { PrivateRoute } from "./lib";
-
-import app, { db } from "./base";
-
 import {
-  LogIn,
-  LogOut,
-  SignUp,
+  Login,
+  Logout,
+  Signup,
   Home,
   GardenNewPage,
   GardenShowPage,
 } from "./pages";
 
-// TODO: Loader fancy
-const Loader = _ => <p>Loading...</p>;
-class App extends Component {
-  state = { loading: true, authenticated: false, currentUser: null };
+import { UserConsumer } from "./contexts/UserContext";
 
-  componentDidMount() {
-    this.subscribeToAuthState();
-  }
+// TODO: fancify Loader
 
-  subscribeToAuthState = () => {
-    app.auth().onAuthStateChanged(this.handleAuthChange);
-  };
-
-  getUser = uid => {
-    return db
-      .collection("users")
-      .doc(uid)
-      .get()
-      .then(snapshot => {
-        this.setState({
-          authenticated: true,
-          currentUser: snapshot.data(),
-          loading: false,
-        });
-      });
-  };
-
-  handleAuthChange = authUser => {
-    if (authUser) {
-      this.getUser(authUser.uid);
-    } else {
-      this.setState({
-        authenticated: false,
-        currentUser: null,
-        loading: false,
-      });
+const Loader = _ => (
+  <div>
+    <p>Loading...</p>
+  </div>
+);
+const App = _ => (
+  <UserConsumer>
+    {({ user, loading }) =>
+      loading ? (
+        <Loader />
+      ) : (
+        <Router>
+          <Switch>
+            <PrivateRoute exact path="/" component={Home} />
+            <PrivateRoute exact path="/gardens/new" component={GardenNewPage} />
+            <PrivateRoute
+              exact
+              path="/gardens/:garden_id"
+              component={GardenShowPage}
+            />
+            <Route
+              exact
+              path="/login"
+              render={() => (user ? <Redirect to="/" /> : <Login />)}
+            />
+            <Route
+              exact
+              path="/logout"
+              render={() => (user ? <Logout /> : <Redirect to="/login" />)}
+            />
+            <Route
+              exact
+              path="/signup"
+              render={() => (user ? <Redirect to="/" /> : <Signup />)}
+            />
+          </Switch>
+        </Router>
+      )
     }
-  };
-
-  render() {
-    const { authenticated, loading, currentUser } = this.state;
-    const { uid: userId, name, email } = authenticated
-      ? currentUser
-      : { uid: null, name: null, email: "" };
-
-    if (loading) {
-      return (
-        <div>
-          <Loader />
-        </div>
-      );
-    }
-
-    return (
-      <Router>
-        <Switch>
-          <PrivateRoute
-            exact
-            path="/"
-            component={Home}
-            authenticated={authenticated}
-            userId={userId}
-            name={name}
-            email={email}
-          />
-          <PrivateRoute
-            exact
-            path="/gardens/new"
-            component={GardenNewPage}
-            authenticated={authenticated}
-          />
-          <PrivateRoute
-            exact
-            path="/gardens/:garden_id"
-            component={GardenShowPage}
-            authenticated={authenticated}
-          />
-          <Route
-            exact
-            path="/login"
-            render={() => (authenticated ? <Redirect to="/" /> : <LogIn />)}
-          />
-          <Route exact path="/logout" render={LogOut} />
-          <Route
-            exact
-            path="/signup"
-            render={() => (authenticated ? <Redirect to="/" /> : <SignUp />)}
-          />
-        </Switch>
-      </Router>
-    );
-  }
-}
+  </UserConsumer>
+);
 
 export default App;

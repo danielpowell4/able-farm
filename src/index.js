@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 //import registerServiceWorker from "./registerServiceWorker";
 import { Provider } from "react-redux";
+import { UserProvider } from "./contexts/UserContext";
 import App from "./App";
 import gardenStore from "./stores/gardenStore";
 import "./index.scss";
@@ -12,7 +13,9 @@ document.addEventListener("DOMContentLoaded", function() {
   if (rootEl !== null) {
     ReactDOM.render(
       <Provider store={gardenStore}>
-        <App />
+        <UserProvider>
+          <App />
+        </UserProvider>
       </Provider>,
       rootEl
     );

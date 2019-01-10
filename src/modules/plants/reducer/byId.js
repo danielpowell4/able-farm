@@ -21,6 +21,16 @@ const initialState = {
     friends: [],
     enemies: ["apple"],
   },
+  5: {
+    id: 2,
+    name: "potato",
+    position: {
+      x: 6,
+      y: 7,
+    },
+    friends: [],
+    enemies: ["apple"],
+  },
   3: {
     id: 3,
     name: "spinach",
