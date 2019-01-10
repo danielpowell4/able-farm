@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "cross-fetch": "^2.2.2",
     "firebase": "^5.7.0",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
