@@ -59,12 +59,15 @@ import { ReactComponent as Sunflower } from "./plants/Sunflower.svg";
 import { ReactComponent as Thyme } from "./plants/Thyme.svg";
 import { ReactComponent as Tomato } from "./plants/Tomato.svg";
 
+import enemies from "../data/enemies";
+import friends from "../data/friends";
+
 const plantSource = {
   beginDrag(props) {
     return {
       id: props.id, // for dropping
-      enemies: props.enemies, // for canDrop && discouragePlacement
-      friends: props.friends, // for encouragePlacement
+      enemies: enemies[props.name] || [], // for canDrop && discouragePlacement
+      friends: friends[props.name] || [], // for encouragePlacement
     };
   },
 };
@@ -170,8 +173,7 @@ class Plant extends Component {
 
 Plant.propTypes = {
   id: PropTypes.number.isRequired,
-  enemies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  friends: PropTypes.arrayOf(PropTypes.string).isRequired,
+  name: PropTypes.string.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
 };
