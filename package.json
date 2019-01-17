@@ -1,9 +1,11 @@
 {
   "name": "garden",
   "version": "0.1.0",
+  "homepage": "https://able.farm",
   "private": true,
   "dependencies": {
     "firebase": "^5.7.0",
+    "gh-pages": "^2.0.1",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
     "react-dnd": "^2.5.4",
@@ -24,7 +26,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": [
     ">0.2%",
