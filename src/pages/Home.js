@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { GET } from "../lib/utils";
 import { UserConsumer, UserContext } from "../contexts/UserContext";
+
+import { db } from "../base";
 
 const LoggedOutHome = _ => (
   <section>
@@ -15,6 +16,7 @@ class LoggedInHome extends Component {
   static contextType = UserContext;
 
   state = {
+    isLoadingGardens: false,
     gardens: [],
   };
 
@@ -23,9 +25,19 @@ class LoggedInHome extends Component {
   }
 
   loadGardens = () => {
-    return GET("/gardens")
-      .then(({ gardens }) => this.setState({ gardens }))
-      .catch(err => console.log(err));
+    this.setState({ isLoadingGardens: true });
+
+    db.collection("gardens")
+      .where("users", "array-contains", this.props.userId)
+      .get()
+      .then(snapshot => {
+        const gardens = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        this.setState({ isLoadingGardens: false, gardens });
+      });
   };
 
   render() {
@@ -42,10 +54,9 @@ class LoggedInHome extends Component {
           <h2>My Gardens</h2>
           <div>
             {gardens.length ? (
-              gardens.map(({ id, name, population }, i) => (
+              gardens.map(({ id, name }, i) => (
                 <div key={i}>
                   <p>Name: {name}</p>
-                  <p>Population: {population}</p>
                   <Link to={`/gardens/${id}`}>Manage Plot</Link>
                 </div>
               ))
@@ -63,7 +74,9 @@ class LoggedInHome extends Component {
 
 const Home = _ => (
   <UserConsumer>
-    {({ user }) => (user ? <LoggedInHome /> : <LoggedOutHome />)}
+    {({ user }) =>
+      user ? <LoggedInHome userId={user.uid} /> : <LoggedOutHome />
+    }
   </UserConsumer>
 );
 

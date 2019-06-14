@@ -26,7 +26,7 @@ const squareTarget = {
 
   drop(props, monitor) {
     let { id } = monitor.getItem();
-    props.movePlant(id, { x: props.x, y: props.y });
+    props.movePlant(id, props.x, props.y);
   },
 };
 

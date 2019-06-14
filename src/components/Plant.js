@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { ItemTypes } from "./Constants";
 import { DragSource } from "react-dnd";
 
+import enemies from "../data/enemies";
+import friends from "../data/friends";
+
 import { ReactComponent as Apple } from "./plants/Apple.svg";
 import { ReactComponent as Artichoke } from "./plants/Artichoke.svg";
 import { ReactComponent as Asparagus } from "./plants/Asparagus.svg";
@@ -59,9 +62,6 @@ import { ReactComponent as Sunflower } from "./plants/Sunflower.svg";
 import { ReactComponent as Thyme } from "./plants/Thyme.svg";
 import { ReactComponent as Tomato } from "./plants/Tomato.svg";
 
-import enemies from "../data/enemies";
-import friends from "../data/friends";
-
 const plantSource = {
   beginDrag(props) {
     return {
@@ -77,6 +77,12 @@ const collect = (connect, monitor) => ({
   connectDragPreview: connect.dragPreview(),
   isDragging: monitor.isDragging(),
 });
+
+const FallbackIcon = props => (
+  <span role="img" aria-label="placeholder plant image" {...props}>
+    🌱
+  </span>
+);
 
 class Plant extends Component {
   componentDidMount() {
@@ -145,11 +151,7 @@ class Plant extends Component {
 
   render() {
     const { connectDragSource, isDragging } = this.props;
-    const SvgIcon = this.components[this.props.name] || (
-      <span role="img" aria-label="placeholder plant image">
-        🌱
-      </span>
-    );
+    const SvgIcon = this.components[this.props.name] || FallbackIcon;
 
     return connectDragSource(
       <div
@@ -172,7 +174,7 @@ class Plant extends Component {
 }
 
 Plant.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,

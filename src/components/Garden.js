@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import GardenSquare from "./GardenSquare";
 import Plant from "./Plant";
-import { movePlant } from "../modules/plants/actions";
 
 class Garden extends Component {
   constructor(props) {
@@ -26,9 +24,7 @@ class Garden extends Component {
   };
 
   findPlantByPosition = (x, y) => {
-    return this.props.plants.find(
-      p => x === p.position.x && y === p.position.y
-    );
+    return this.props.plants.find(p => x === p.positionX && y === p.positionY);
   };
 
   gatherNeighbors = (x, y) => {
@@ -111,16 +107,4 @@ class Garden extends Component {
   }
 }
 
-const mapStateToProps = ({ plants: { byId: plantsById, allPlants } }) => ({
-  plants: allPlants.map(p => plantsById[p]),
-});
-
-const mapDispatchToProps = dispatch => ({
-  movePlant: (id, position) => dispatch(movePlant(id, position)),
-});
-
-Garden = DragDropContext(HTML5Backend)(Garden);
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Garden);
+export default DragDropContext(HTML5Backend)(Garden);

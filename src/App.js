@@ -36,7 +36,7 @@ const App = _ => (
             <PrivateRoute exact path="/gardens/new" component={GardenNewPage} />
             <PrivateRoute
               exact
-              path="/gardens/:garden_id"
+              path="/gardens/:gardenId"
               component={GardenShowPage}
             />
             <Route
