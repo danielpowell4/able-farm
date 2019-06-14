@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Garden from "../../components/Garden";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../../base";
+import enemies from "../../data/enemies";
+import friends from "../../data/friends";
 
 const ShowPage = ({
   match: {
@@ -15,6 +17,7 @@ const ShowPage = ({
       .doc(gardenId)
       .collection("plants")
   );
+  const [activePlant, setActivePlant] = useState(null);
 
   const updatePlant = (id, traits) => {
     db.collection("gardens")
@@ -42,12 +45,28 @@ const ShowPage = ({
     <main>
       <header>
         <h1>{garden.name}</h1>
+        {!!activePlant && (
+          <details>
+            <summary>
+              <strong>Active Plant</strong> {activePlant.name}
+            </summary>
+            <ul>
+              <li>
+                <strong>Friends</strong> {friends[activePlant.name].join(", ")}
+              </li>
+              <li>
+                <strong>Enemies</strong> {enemies[activePlant.name].join(", ")}
+              </li>
+            </ul>
+          </details>
+        )}
       </header>
       <Garden
         height={garden.height}
         width={garden.width}
         plants={plants}
         movePlant={movePlant}
+        setActivePlant={setActivePlant}
       />
     </main>
   );

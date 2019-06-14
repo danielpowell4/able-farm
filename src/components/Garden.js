@@ -70,7 +70,9 @@ class Garden extends Component {
           movePlant={this.props.movePlant}
           neighbors={neighbors}
         >
-          {!!plant && <Plant {...plant} />}
+          {!!plant && (
+            <Plant {...plant} onClick={_ => this.props.setActivePlant(plant)} />
+          )}
         </GardenSquare>
       </div>
     );

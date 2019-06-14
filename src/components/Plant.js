@@ -150,7 +150,7 @@ class Plant extends Component {
   };
 
   render() {
-    const { connectDragSource, isDragging } = this.props;
+    const { connectDragSource, isDragging, onClick } = this.props;
     const SvgIcon = this.components[this.props.name] || FallbackIcon;
 
     return connectDragSource(
@@ -162,12 +162,7 @@ class Plant extends Component {
           cursor: "move",
         }}
       >
-        <SvgIcon
-          style={{ height: 46 }}
-          onClick={() => {
-            console.log(this.props.name, "clicked");
-          }}
-        />
+        <SvgIcon style={{ height: 46 }} onClick={onClick} />
       </div>
     );
   }
