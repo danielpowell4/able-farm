@@ -18,10 +18,6 @@ class Garden extends Component {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
   };
-  static defaultProps = {
-    width: 8,
-    height: 8,
-  };
 
   findPlantByPosition = (x, y) => {
     return this.props.plants.find(p => x === p.positionX && y === p.positionY);
