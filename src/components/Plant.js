@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { ItemTypes } from "./Constants";
-import { DragSource } from "react-dnd";
+import { useDrag } from "react-dnd";
 
 import enemies from "../data/enemies";
 import friends from "../data/friends";
@@ -62,117 +62,107 @@ import { ReactComponent as Sunflower } from "./plants/Sunflower.svg";
 import { ReactComponent as Thyme } from "./plants/Thyme.svg";
 import { ReactComponent as Tomato } from "./plants/Tomato.svg";
 
-const plantSource = {
-  beginDrag(props) {
-    return {
-      id: props.id, // for dropping
-      enemies: enemies[props.name] || [], // for canDrop && discouragePlacement
-      friends: friends[props.name] || [], // for encouragePlacement
-    };
-  },
-};
-
-const collect = (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  connectDragPreview: connect.dragPreview(),
-  isDragging: monitor.isDragging(),
-});
-
 const FallbackIcon = props => (
   <span role="img" aria-label="placeholder plant image" {...props}>
     🌱
   </span>
 );
 
-class Plant extends Component {
-  componentDidMount() {
-    // const img = new Image();
-    // img.src = corn;
-    // img.onload = () => this.props.connectDragPreview(img);
-  }
-
-  components = {
-    apple: Apple,
-    artichoke: Artichoke,
-    asparagus: Asparagus,
-    basil: Basil,
-    beans: Beans,
-    beets: Beets,
-    "broad beans": BroadBeans,
-    broccoli: Broccoli,
-    "brussel sprouts": BrusselSprouts,
-    cabbage: Cabbage,
-    carrots: Carrots,
-    cauliflower: Cauliflower,
-    celery: Celery,
-    chamomile: Chamomile,
-    cherry: Cherry,
-    chervil: Chervil,
-    chives: Chives,
-    "climbing beans": ClimbingBeans,
-    coriander: Coriander,
-    corn: Corn,
-    cucumber: Cucumber,
-    dill: Dill,
-    eggplant: Eggplant,
-    fennel: Fennel,
-    garlic: Garlic,
-    "grape vine": GrapeVine,
-    grass: Grass,
-    horseradish: Horseradish,
-    lavender: Lavender,
-    leeks: Leeks,
-    lettuce: Lettuce,
-    mints: Mints,
-    mulberry: Mulberry,
-    mustard: Mustard,
-    nasturtium: Nasturtium,
-    onions: Onions,
-    orange: Orange,
-    parsely: Parsely,
-    parsnip: Parsnip,
-    peas: Peas,
-    potato: Potato,
-    pumpkin: Pumpkin,
-    radish: Radish,
-    raspberry: Raspberry,
-    rosemary: Rosemary,
-    roses: Roses,
-    sage: Sage,
-    savory: Savory,
-    shallots: Shallots,
-    spinach: Spinach,
-    squash: Squash,
-    strawberries: Strawberries,
-    sunflower: Sunflower,
-    thyme: Thyme,
-    tomato: Tomato,
-  };
-
-  render() {
-    const { connectDragSource, isDragging, onClick } = this.props;
-    const SvgIcon = this.components[this.props.name] || FallbackIcon;
-
-    return connectDragSource(
-      <div
-        style={{
-          opacity: isDragging ? 0.5 : 1,
-          fontSize: 46,
-          fontWeight: "bold",
-          cursor: "move",
-        }}
-      >
-        <SvgIcon style={{ height: 46 }} onClick={onClick} />
-      </div>
-    );
-  }
-}
-
-Plant.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  connectDragSource: PropTypes.func.isRequired,
-  isDragging: PropTypes.bool.isRequired,
+const nameSvgMap = {
+  apple: Apple,
+  artichoke: Artichoke,
+  asparagus: Asparagus,
+  basil: Basil,
+  beans: Beans,
+  beets: Beets,
+  "broad beans": BroadBeans,
+  broccoli: Broccoli,
+  "brussel sprouts": BrusselSprouts,
+  cabbage: Cabbage,
+  carrots: Carrots,
+  cauliflower: Cauliflower,
+  celery: Celery,
+  chamomile: Chamomile,
+  cherry: Cherry,
+  chervil: Chervil,
+  chives: Chives,
+  "climbing beans": ClimbingBeans,
+  coriander: Coriander,
+  corn: Corn,
+  cucumber: Cucumber,
+  dill: Dill,
+  eggplant: Eggplant,
+  fennel: Fennel,
+  garlic: Garlic,
+  "grape vine": GrapeVine,
+  grass: Grass,
+  horseradish: Horseradish,
+  lavender: Lavender,
+  leeks: Leeks,
+  lettuce: Lettuce,
+  mints: Mints,
+  mulberry: Mulberry,
+  mustard: Mustard,
+  nasturtium: Nasturtium,
+  onions: Onions,
+  orange: Orange,
+  parsely: Parsely,
+  parsnip: Parsnip,
+  peas: Peas,
+  potato: Potato,
+  pumpkin: Pumpkin,
+  radish: Radish,
+  raspberry: Raspberry,
+  rosemary: Rosemary,
+  roses: Roses,
+  sage: Sage,
+  savory: Savory,
+  shallots: Shallots,
+  spinach: Spinach,
+  squash: Squash,
+  strawberries: Strawberries,
+  sunflower: Sunflower,
+  thyme: Thyme,
+  tomato: Tomato,
 };
 
-export default DragSource(ItemTypes.PLANT, plantSource, collect)(Plant);
+const Plant = ({ id, name, onClick }) => {
+  const [{ isDragging }, drag] = useDrag({
+    item: {
+      type: ItemTypes.PLANT,
+      id: id, // for drop update
+      name: name, // for drop add
+      enemies: enemies[name] || [], // for canDrop && discouragePlacement
+      friends: friends[name] || [], // for encouragePlacement
+    },
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
+
+  const SvgIcon = nameSvgMap[name] || FallbackIcon;
+
+  return (
+    <div
+      ref={drag}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        fontSize: 46,
+        fontWeight: "bold",
+        cursor: "move",
+      }}
+    >
+      {
+        // Todo: use onMouseDown for garden-square plants
+      }
+      <SvgIcon style={{ height: 46 }} onClick={onClick} />
+    </div>
+  );
+};
+
+Plant.propTypes = {
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string, // used to create/update on drop
+};
+
+export default Plant;

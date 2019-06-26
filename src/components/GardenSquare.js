@@ -1,8 +1,9 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+
+import { useDrop } from "react-dnd";
 import Square from "./Square";
 import { ItemTypes } from "./Constants";
-import { DropTarget } from "react-dnd";
 
 const getRating = (neighbors, setB) => {
   let relationPoints = 0;
@@ -18,40 +19,15 @@ const getRating = (neighbors, setB) => {
   return relationPoints + distPoints;
 };
 
-const squareTarget = {
-  canDrop(props, monitor) {
-    // let { enemies } = monitor.getItem();
-    return !props.hasPlant;
-  },
-
-  drop(props, monitor) {
-    let { id } = monitor.getItem();
-    props.movePlant(id, props.x, props.y);
-  },
+const overLayColors = {
+  friend: "#5DA449",
+  enemy: "#DF574F",
+  notAllowed: "#F9433E",
+  isOver: "#40BDFF",
 };
 
-const collect = (connect, monitor) => {
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-    canDrop: monitor.canDrop(),
-    activePlant: monitor.getItem(),
-  };
-};
-
-class GardenSquare extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.overLayColors = {
-      friend: "#5DA449",
-      enemy: "#DF574F",
-      notAllowed: "#F9433E",
-      isOver: "#40BDFF",
-    };
-  }
-
-  renderOverlay = (relation, strength = 160) => (
+const Overlay = ({ relation, strength }) => {
+  return (
     <div
       style={{
         position: "absolute",
@@ -61,50 +37,60 @@ class GardenSquare extends PureComponent {
         width: "calc(100% - 2px)",
         zIndex: 1,
         opacity: strength / 200,
-        backgroundColor: this.overLayColors[relation],
+        backgroundColor: overLayColors[relation],
       }}
     />
   );
+};
 
-  render() {
-    const {
-      children,
-      connectDropTarget,
-      isOver,
-      activePlant,
-      canDrop,
-      neighbors,
-    } = this.props;
+Overlay.defaultProps = {
+  strength: 160,
+};
 
-    return connectDropTarget(
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <Square>{children}</Square>
-        {isOver &&
-          (canDrop
-            ? this.renderOverlay("isOver")
-            : this.renderOverlay("notAllowed"))}
-        {!isOver &&
-          (canDrop &&
-            this.renderOverlay(
-              "friend",
-              getRating(neighbors, activePlant.friends)
-            ))}
-        {!isOver &&
-          (canDrop &&
-            this.renderOverlay(
-              "enemy",
-              getRating(neighbors, activePlant.enemies)
-            ))}
-      </div>
-    );
-  }
-}
+const GardenSquare = ({ x, y, movePlant, hasPlant, neighbors, children }) => {
+  const [{ isOver, canDrop, activePlant }, drop] = useDrop({
+    accept: ItemTypes.PLANT,
+    canDrop: () => !hasPlant,
+    drop: item => {
+      movePlant(item, x, y);
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+      activePlant: monitor.getItem(),
+    }),
+  });
+
+  const friends = (!!activePlant && activePlant.friends) || [];
+  const enemies = (!!activePlant && activePlant.enemies) || [];
+
+  return (
+    <div
+      ref={drop}
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <Square>{children}</Square>
+      {isOver &&
+        (canDrop ? (
+          <Overlay relation="isOver" />
+        ) : (
+          <Overlay relation="notAllowed" />
+        ))}
+      {!isOver &&
+        (canDrop && (
+          <Overlay relation="friend" strength={getRating(neighbors, friends)} />
+        ))}
+      {!isOver &&
+        (canDrop && (
+          <Overlay relation="enemy" strength={getRating(neighbors, enemies)} />
+        ))}
+    </div>
+  );
+};
 
 GardenSquare.propTypes = {
   x: PropTypes.number.isRequired,
@@ -116,9 +102,6 @@ GardenSquare.propTypes = {
       distance: PropTypes.number,
     })
   ).isRequired,
-  connectDropTarget: PropTypes.func.isRequired,
-  isOver: PropTypes.bool.isRequired,
-  canDrop: PropTypes.bool.isRequired,
 };
 
-export default DropTarget(ItemTypes.PLANT, squareTarget, collect)(GardenSquare);
+export default GardenSquare;
