@@ -89,12 +89,13 @@ class Garden extends Component {
     return (
       <div
         style={{
-          height: 560,
-          width: 560,
+          height: 480,
+          width: 480,
           display: "flex",
           flexWrap: "wrap",
-          border: "1px solid gray",
           margin: "1rem auto",
+          // border: "2px solid #6D5720",
+          // borderRadius: ".5rem",
         }}
       >
         {squares}

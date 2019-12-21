@@ -147,7 +147,7 @@ const Plant = ({ id, name, onClick }) => {
       ref={drag}
       style={{
         opacity: isDragging ? 0.5 : 1,
-        fontSize: 46,
+        fontSize: 46, // for fallback
         fontWeight: "bold",
         cursor: "move",
       }}

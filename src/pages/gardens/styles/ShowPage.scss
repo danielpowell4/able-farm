@@ -1,32 +1,57 @@
-details {
-  max-width: 560px;
+main {
   width: 100%;
-  padding: 10px;
-  margin: auto;
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
 
-  summary {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+  background-color: #e4fff2;
 
-    strong {
-      margin-right: 1rem;
+  header {
+    flex: 1 0 300px;
+    padding: 1rem;
+
+    .activePlantContainer {
+      width: 100%;
+      padding: 10px;
+      margin: auto;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-direction: column;
+
+      strong {
+        margin-right: 1rem;
+      }
+
+      .activePlant {
+        display: flex;
+        align-items: center;
+
+        p {
+          margin-left: 1rem;
+        }
+      }
+
+      ul {
+        margin-block: 0;
+        margin-inline: 0;
+        padding: 0;
+        padding-inline: 0;
+
+        li {
+          display: flex;
+          flex-flow: row wrap;
+          align-items: center;
+
+          div {
+            padding-right: 0.5rem;
+          }
+        }
+      }
     }
   }
 
-  ul {
-    margin-block: 0;
-    margin-inline: 0;
-    padding: 0;
-    padding-inline: 0;
-
-    li {
-      display: flex;
-      flex-flow: row wrap;
-
-      div {
-        padding-right: 0.5rem;
-      }
-    }
+  .gardenContainer {
+    flex: 1 0 400px;
   }
 }

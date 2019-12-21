@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { DndProvider } from "react-dnd";
+import { DndProvider, useDrop } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
 import Garden from "../../components/Garden";
@@ -11,6 +11,39 @@ import enemies from "../../data/enemies";
 import friends from "../../data/friends";
 
 import "./styles/ShowPage.scss";
+
+const Compost = ({ removePlant }) => {
+  const [{ isOver }, drop] = useDrop({
+    accept: "plant",
+    drop: item => {
+      removePlant(item);
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+    }),
+  });
+
+  const color = isOver ? "red" : "black";
+
+  return (
+    <div
+      ref={drop}
+      className="compost"
+      style={{
+        width: "100%",
+        maxWidth: 480,
+        height: 100,
+        margin: "auto",
+        background: color,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <p style={{ color: "#fff" }}>Compost Pile</p>
+    </div>
+  );
+};
 
 const ShowPage = ({
   match: {
@@ -50,6 +83,16 @@ const ShowPage = ({
     }
   };
 
+  const removePlant = item => {
+    if (!!item.id) {
+      db.collection("gardens")
+        .doc(gardenId)
+        .collection("plants")
+        .doc(item.id)
+        .delete();
+    }
+  };
+
   if (!gardenSnapshot || !plantQuery) {
     return <p>Loading...</p>;
   }
@@ -64,13 +107,13 @@ const ShowPage = ({
   const activePlantEnemies = enemies[activePlant.name] || [];
 
   return (
-    <main>
-      <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={HTML5Backend}>
+      <main>
         <header>
           <h1>{garden.name}</h1>
           {!!activePlant && (
-            <details>
-              <summary>
+            <div className="activePlantContainer">
+              <div className="activePlant">
                 <strong>Active Plant</strong>{" "}
                 {!!activePlant.name ? (
                   <>
@@ -86,9 +129,9 @@ const ShowPage = ({
                 ) : (
                   <p>None</p>
                 )}
-              </summary>
+              </div>
               <ul>
-                <li>
+                <li className="activePlant__friends">
                   <strong>Friends</strong>{" "}
                   {activePlantFriends.length
                     ? activePlantFriends.map((name, i) => (
@@ -100,7 +143,7 @@ const ShowPage = ({
                       ))
                     : "No Friends"}
                 </li>
-                <li>
+                <li className="activePlant__enemies">
                   <strong>Enemies</strong>{" "}
                   {activePlantEnemies.length
                     ? activePlantEnemies.map((name, i) => (
@@ -113,19 +156,22 @@ const ShowPage = ({
                     : "No Haters"}
                 </li>
               </ul>
-            </details>
+            </div>
           )}
         </header>
+        <div className="gardenContainer">
+          <Garden
+            height={garden.height}
+            width={garden.width}
+            plants={plants}
+            movePlant={movePlant}
+            setActivePlant={setActivePlant}
+          />
 
-        <Garden
-          height={garden.height}
-          width={garden.width}
-          plants={plants}
-          movePlant={movePlant}
-          setActivePlant={setActivePlant}
-        />
-      </DndProvider>
-    </main>
+          <Compost removePlant={removePlant} />
+        </div>
+      </main>
+    </DndProvider>
   );
 };
 
