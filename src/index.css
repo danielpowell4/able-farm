@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css?family=Fira+Mono:400,700|Playfair+Display:700&display=swap");
+ body, #root {
+	 margin: 0;
+	 padding: 0;
+	 display: flex;
+   justify-content: center;
+   align-items: baseline;
+	 height: 100%;
+	 width: 100%;
+}
+ .App-wrapper {
+	 margin: 0;
+	 padding: 0;
+	 height: 100%;
+	 width: 100%;
+}
+ .Nav {
+	 margin: 0;
+	 padding: 0.25rem;
+	 display: flex;
+	 flex-flow: row;
+	 justify-content: space-between;
+}
+ .Nav a {
+	 padding: 0 0.5rem 0;
+}
+ .App__body {
+	 max-width: 1080px;
+	 width: 100%;
+	 margin: auto;
+}
+ h1, h2, h3, h4 {
+	 font-family: "Playfair Display", sans-serif;
+}
+ h5, h6, strong, li, div, p {
+	 font-family: "Fira Mono", sans-serif;
+}
+ h5, h6, strong {
+	 font-weight: 700;
+}

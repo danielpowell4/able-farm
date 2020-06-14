@@ -10,7 +10,7 @@ import { db } from "../../base";
 import enemies from "../../data/enemies";
 import friends from "../../data/friends";
 
-import "./styles/ShowPage.scss";
+import "./styles/ShowPage.css";
 
 const Compost = ({ removePlant }) => {
   const [{ isOver }, drop] = useDrop({

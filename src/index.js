@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 //import registerServiceWorker from "./registerServiceWorker";
 import { UserProvider } from "./contexts/UserContext";
 import App from "./App";
-import "./index.scss";
+import "./index.css";
 
 const rootEl = document.getElementById("root");
 

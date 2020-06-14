@@ -135,6 +135,7 @@ const Plant = ({ id, name, onClick }) => {
       enemies: enemies[name] || [], // for canDrop && discouragePlacement
       friends: friends[name] || [], // for encouragePlacement
     },
+    begin: onClick,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -152,10 +153,7 @@ const Plant = ({ id, name, onClick }) => {
         cursor: "move",
       }}
     >
-      {
-        // Todo: use onMouseDown for garden-square plants
-      }
-      <SvgIcon style={{ height: 46 }} onClick={onClick} />
+      <SvgIcon style={{ height: 46, width: 46 }} onClick={onClick}/>
     </div>
   );
 };

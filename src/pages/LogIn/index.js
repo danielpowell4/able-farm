@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { UserConsumer } from "../../contexts/UserContext";
-import "./Login.scss";
+import "./Login.css";
 
 const Login = _ => (
   <UserConsumer>
