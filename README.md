@@ -2,4 +2,4 @@
 
 Because everyone should be able to start a farm.
 
-Bootstrapped with [Create React App App](https://github.com/facebookincubator/create-react-app).
+Bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
