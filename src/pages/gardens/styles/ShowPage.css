@@ -4,7 +4,6 @@ main {
   min-height: 100vh;
   display: flex;
   flex-flow: row wrap;
-  background-color: #e4fff2;
 }
 main header {
   flex: 1 0 300px;

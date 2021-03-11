@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Fira+Mono:400,700|Playfair+Display:700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@700&family=Fira+Mono:wght@400;500&display=swap");
 
 body,
 #root {
@@ -35,23 +35,39 @@ body,
 h1,
 h2,
 h3,
-h4 {
-  font-family: "Playfair Display", sans-serif;
+h4,
+strong,
+label {
+  font-family: "Alegreya Sans SC", sans-serif;
+  font-weight: 700;
 }
+
+h5,
+h6 {
+  font-weight: 700;
+}
+
 h5,
 h6,
-strong,
 li,
 div,
 p {
   font-family: "Fira Mono", sans-serif;
 }
-h5,
-h6,
-strong {
-  font-weight: 700;
+
+a:visited {
+  color: inherit;
 }
 
 input {
   box-sizing: border-box;
+}
+
+/* colors */
+:root {
+  --bg: #effff7;;
+  --bgAlt: #fff;
+  --accent: rgb(255, 96, 95);
+
+  --hr: #aaa;
 }

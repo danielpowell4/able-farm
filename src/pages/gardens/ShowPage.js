@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { DndProvider, useDrop } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-import Garden from "../../components/Garden";
-import Plant from "../../components/Plant";
+import { Garden, Plant, Layout } from "../../components";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../../base";
 import enemies from "../../data/enemies";
@@ -32,7 +31,6 @@ const Compost = ({ removePlant }) => {
       style={{
         width: "100%",
         maxWidth: 480,
-        height: 100,
         margin: "auto",
         background: color,
         display: "flex",
@@ -94,7 +92,11 @@ const ShowPage = ({
   };
 
   if (!gardenSnapshot || !plantQuery) {
-    return <p>Loading...</p>;
+    return (
+      <Layout>
+        <p>Loading...</p>
+      </Layout>
+    );
   }
 
   const garden = {
@@ -107,71 +109,73 @@ const ShowPage = ({
   const activePlantEnemies = enemies[activePlant.name] || [];
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <main>
-        <header>
-          <h1>{garden.name}</h1>
-          {!!activePlant && (
-            <div className="activePlantContainer">
-              <div className="activePlant">
-                <strong>Active Plant</strong>{" "}
-                {!!activePlant.name ? (
-                  <>
-                    <Plant
-                      name={activePlant.name}
-                      onClick={() => setActivePlant({ name: activePlant.name })}
-                    />
-                    <p>
-                      {activePlant.name[0].toUpperCase() +
-                        activePlant.name.substring(1)}
-                    </p>
-                  </>
-                ) : (
-                  <p>None</p>
-                )}
+    <Layout>
+      <DndProvider backend={HTML5Backend}>
+        <main>
+          <header>
+            <h1>{garden.name}</h1>
+            {!!activePlant && (
+              <div className="activePlantContainer">
+                <div className="activePlant">
+                  <strong>Active Plant</strong>{" "}
+                  {!!activePlant.name ? (
+                    <>
+                      <Plant
+                        name={activePlant.name}
+                        onClick={() => setActivePlant({ name: activePlant.name })}
+                      />
+                      <p>
+                        {activePlant.name[0].toUpperCase() +
+                          activePlant.name.substring(1)}
+                      </p>
+                    </>
+                  ) : (
+                    <p>None</p>
+                  )}
+                </div>
+                <ul>
+                  <li className="activePlant__friends">
+                    <strong>Friends</strong>{" "}
+                    {activePlantFriends.length
+                      ? activePlantFriends.map((name, i) => (
+                          <Plant
+                            key={i}
+                            name={name}
+                            onClick={() => setActivePlant({ name })}
+                          />
+                        ))
+                      : "No Friends"}
+                  </li>
+                  <li className="activePlant__enemies">
+                    <strong>Enemies</strong>{" "}
+                    {activePlantEnemies.length
+                      ? activePlantEnemies.map((name, i) => (
+                          <Plant
+                            key={i}
+                            name={name}
+                            onClick={() => setActivePlant({ name })}
+                          />
+                        ))
+                      : "No Haters"}
+                  </li>
+                </ul>
               </div>
-              <ul>
-                <li className="activePlant__friends">
-                  <strong>Friends</strong>{" "}
-                  {activePlantFriends.length
-                    ? activePlantFriends.map((name, i) => (
-                        <Plant
-                          key={i}
-                          name={name}
-                          onClick={() => setActivePlant({ name })}
-                        />
-                      ))
-                    : "No Friends"}
-                </li>
-                <li className="activePlant__enemies">
-                  <strong>Enemies</strong>{" "}
-                  {activePlantEnemies.length
-                    ? activePlantEnemies.map((name, i) => (
-                        <Plant
-                          key={i}
-                          name={name}
-                          onClick={() => setActivePlant({ name })}
-                        />
-                      ))
-                    : "No Haters"}
-                </li>
-              </ul>
-            </div>
-          )}
-        </header>
-        <div className="gardenContainer">
-          <Garden
-            height={garden.height}
-            width={garden.width}
-            plants={plants}
-            movePlant={movePlant}
-            setActivePlant={setActivePlant}
-          />
+            )}
+          </header>
+          <div className="gardenContainer">
+            <Garden
+              height={garden.height}
+              width={garden.width}
+              plants={plants}
+              movePlant={movePlant}
+              setActivePlant={setActivePlant}
+            />
 
-          <Compost removePlant={removePlant} />
-        </div>
-      </main>
-    </DndProvider>
+            <Compost removePlant={removePlant} />
+          </div>
+        </main>
+      </DndProvider>
+    </Layout>
   );
 };
 

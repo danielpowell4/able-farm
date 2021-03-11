@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { UserConsumer, UserContext } from "../contexts/UserContext";
+import { Layout } from "../components";
 
 import { db } from "../base";
 
-const LoggedOutHome = _ => (
+const LoggedOutHome = (_) => (
   <section>
     <h1>Home</h1>
     <h3>You are not logged in.</h3>
@@ -13,8 +14,6 @@ const LoggedOutHome = _ => (
 );
 
 class LoggedInHome extends Component {
-  static contextType = UserContext;
-
   state = {
     isLoadingGardens: false,
     gardens: [],
@@ -30,8 +29,8 @@ class LoggedInHome extends Component {
     db.collection("gardens")
       .where("users", "array-contains", this.props.userId)
       .get()
-      .then(snapshot => {
-        const gardens = snapshot.docs.map(doc => ({
+      .then((snapshot) => {
+        const gardens = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
@@ -41,38 +40,44 @@ class LoggedInHome extends Component {
   };
 
   render() {
-    const { gardens } = this.state;
-    const { onLogout } = this.context;
+    const { gardens, isLoadingGardens } = this.state;
 
     return (
-      <section>
-        <h1>Home</h1>
-        <button onClick={onLogout}>Logout</button>
-        <h3>You are logged in.</h3>
-        <p>Todo: insert a dashboard.</p>
+      <Layout>
+        <h1>
+          <span role="img" aria-label="waving hand">
+            👋
+          </span>{" "}
+          Welcome Back!
+        </h1>
         <div>
-          <h2>My Gardens</h2>
-          <div>
-            {gardens.length ? (
-              gardens.map(({ id, name }, i) => (
-                <div key={i}>
-                  <p>Name: {name}</p>
-                  <Link to={`/gardens/${id}`}>Manage Plot</Link>
-                </div>
-              ))
-            ) : (
-              <p>
-                No seeds started. <Link to="/gardens/new">Start A Garden</Link>
-              </p>
-            )}
-          </div>
+          <h2>Gardens</h2>
+          {isLoadingGardens ? (
+            <p>Loading...</p>
+          ) : (
+            <div>
+              {gardens.length ? (
+                gardens.map(({ id, name }, i) => (
+                  <div key={i}>
+                    <p>Name: {name}</p>
+                    <Link to={`/gardens/${id}`}>Manage Plot</Link>
+                  </div>
+                ))
+              ) : (
+                <p>
+                  No seeds started.{" "}
+                  <Link to="/gardens/new">Start A Garden</Link>
+                </p>
+              )}
+            </div>
+          )}
         </div>
-      </section>
+      </Layout>
     );
   }
 }
 
-const Home = _ => (
+const Home = (_) => (
   <UserConsumer>
     {({ user }) =>
       user ? <LoggedInHome userId={user.uid} /> : <LoggedOutHome />

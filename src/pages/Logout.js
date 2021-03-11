@@ -1,18 +1,14 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { UserContext } from "../contexts/UserContext";
 
-class Logout extends Component {
-  static contextType = UserContext;
+const Logout = () => {
+  const { user, onLogout } = React.useContext(UserContext);
 
-  componentDidMount() {
-    const { user, onLogout } = this.context;
-
+  React.useEffect(() => {
     if (!!user) onLogout();
-  }
+  })
 
-  render() {
-    return <p>Logging Out...</p>;
-  }
+  return <p>Logging Out...</p>;
 }
 
 export default Logout;
