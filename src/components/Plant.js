@@ -135,7 +135,6 @@ const Plant = ({ id, name, onClick }) => {
       enemies: enemies[name] || [], // for canDrop && discouragePlacement
       friends: friends[name] || [], // for encouragePlacement
     },
-    begin: onClick,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
