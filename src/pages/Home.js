@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Link } from "react-router-dom";
-import { UserConsumer, UserContext } from "../contexts/UserContext";
+import { UserContext } from "../contexts/UserContext";
 import { Layout } from "../components";
+import homeStyles from "./Home.module.css";
 
 import { db } from "../base";
 
@@ -13,21 +14,15 @@ const LoggedOutHome = (_) => (
   </section>
 );
 
-class LoggedInHome extends Component {
-  state = {
-    isLoadingGardens: false,
-    gardens: [],
-  };
+const LoggedInHome = ({userId}) =>  {
+  const [isLoadingGardens, setIsLoadingGardens] = React.useState(false);
+  const [gardens, setGardens] = React.useState([]);
 
-  componentDidMount() {
-    this.loadGardens();
-  }
-
-  loadGardens = () => {
-    this.setState({ isLoadingGardens: true });
+  React.useEffect(() => {
+    setIsLoadingGardens(() => true);
 
     db.collection("gardens")
-      .where("users", "array-contains", this.props.userId)
+      .where("users", "array-contains", userId)
       .get()
       .then((snapshot) => {
         const gardens = snapshot.docs.map((doc) => ({
@@ -35,54 +30,51 @@ class LoggedInHome extends Component {
           ...doc.data(),
         }));
 
-        this.setState({ isLoadingGardens: false, gardens });
+        setGardens(() => gardens);
+        setIsLoadingGardens(() => false);
       });
-  };
+  }, [userId])
 
-  render() {
-    const { gardens, isLoadingGardens } = this.state;
-
-    return (
-      <Layout>
-        <h1>
-          <span role="img" aria-label="waving hand">
-            👋
-          </span>{" "}
-          Welcome Back!
-        </h1>
-        <div>
-          <h2>Gardens</h2>
-          {isLoadingGardens ? (
-            <p>Loading...</p>
-          ) : (
-            <div>
-              {gardens.length ? (
-                gardens.map(({ id, name }, i) => (
-                  <div key={i}>
-                    <p>Name: {name}</p>
-                    <Link to={`/gardens/${id}`}>Manage Plot</Link>
-                  </div>
-                ))
-              ) : (
-                <p>
-                  No seeds started.{" "}
-                  <Link to="/gardens/new">Start A Garden</Link>
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-      </Layout>
-    );
-  }
+  return (
+    <Layout>
+      <h1>
+        <span role="img" aria-label="waving hand">
+          👋
+        </span>{" "}
+        Welcome Back!
+      </h1>
+      <div>
+        <h2>Gardens</h2>
+        {isLoadingGardens ? (
+          <p>Loading...</p>
+        ) : gardens.length ? (
+            <ul className={homeStyles.gardenList}>
+              {gardens.map((garden) => (
+                <li key={garden.id} className={homeStyles.gardenList__card}>
+                  <Link to={`/gardens/${garden.id}`}>
+                    <h3>{garden.name}</h3>
+                    <p>{garden.height} x {garden.width} Plot</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            ) : (
+              <p>
+                No seeds started.{" "}
+                <Link to="/gardens/new">Start A Garden</Link>
+              </p>
+            )}
+      </div>
+    </Layout>
+  );
 }
 
-const Home = (_) => (
-  <UserConsumer>
-    {({ user }) =>
-      user ? <LoggedInHome userId={user.uid} /> : <LoggedOutHome />
-    }
-  </UserConsumer>
-);
+const Home = (_) => {
+  const { user } = React.useContext(UserContext);
+
+  if (!user) return <LoggedOutHome />;
+
+  return <LoggedInHome userId={user.uid} />
+}
 
 export default Home;

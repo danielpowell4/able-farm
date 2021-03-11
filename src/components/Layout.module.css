@@ -15,41 +15,22 @@
   padding-right: 1.5rem;
 }
 
+.sidebarMenu a {
+  text-decoration: none;
+}
+
 .sidebarMenu h3 {
   padding: 1rem;
 }
 
-.Layout__main {
-  grid-area: main;
-}
-
-.mainContent {
-  padding: 1rem 2rem;
-}
-
-.topMenu {
-  background-color: var(--bgAlt);
-  height: 4rem;
-  margin: 0;
-  padding: 0 0.5rem;
-}
-
-.topMenu__spacer {
-  align-items: center;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
-  margin: auto;
-  min-height: 4rem;
-  padding: 0 1rem;
-}
-
-.topMenu__navigation__list {
-  display: flex;
-  flex-flow: row wrap;
+.sidebarMenu__list {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.sidebarMenu__list__item {
+  padding: 1rem;
 }
 
 .avatar {
@@ -63,4 +44,13 @@
 .topMenu__navigation__list__item {
   color: var(--textNormal);
   text-decoration: none;
+}
+
+
+.Layout__main {
+  grid-area: main;
+}
+
+.mainContent {
+  padding: 1rem 2rem;
 }

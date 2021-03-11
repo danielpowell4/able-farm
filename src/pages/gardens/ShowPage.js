@@ -22,8 +22,6 @@ const Compost = ({ removePlant }) => {
     }),
   });
 
-  const color = isOver ? "red" : "black";
-
   return (
     <div
       ref={drop}
@@ -32,7 +30,9 @@ const Compost = ({ removePlant }) => {
         width: "100%",
         maxWidth: 480,
         margin: "auto",
-        background: color,
+        padding: `1.5rem 0`,
+        background: "var(--accent)",
+        opacity: isOver ? 0.8 : 1,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

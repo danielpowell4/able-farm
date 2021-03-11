@@ -1,0 +1,34 @@
+.gardenList {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.gardenList__card {
+  margin: 1rem 0 0 1rem;
+  padding: 1.15rem;
+  background-color: var(--bgAlt);
+  min-width: 50%;
+
+  transition: box-shadow 500ms ease 0s, transform 500ms ease 0s;
+  box-shadow: var(--boxShadow);
+}
+
+.gardenList__card:hover {
+  box-shadow: rgb(6 45 33 / 10%) 0px 10px 10px -6px;
+  transform: scale(1.025);
+}
+
+.gardenList__card a {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+
+  text-decoration: none;
+}
+
+.gardenList__card h3, .gardenList__card p {
+  margin: 0;
+}

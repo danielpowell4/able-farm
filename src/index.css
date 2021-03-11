@@ -67,7 +67,8 @@ input {
 :root {
   --bg: #effff7;;
   --bgAlt: #fff;
-  --accent: rgb(255, 96, 95);
+  --accent: rgb(24, 83, 65); /* rgb(255, 96, 95); <-- redish */
 
   --hr: #aaa;
+  --boxShadow: rgb(6 45 33 / 10%) 0px 2px 3px;
 }
