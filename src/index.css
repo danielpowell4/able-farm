@@ -51,3 +51,7 @@ h6,
 strong {
   font-weight: 700;
 }
+
+input {
+  box-sizing: border-box;
+}
