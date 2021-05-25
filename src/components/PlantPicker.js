@@ -5,21 +5,24 @@ import Plant from "./Plant";
 
 import { titleize } from "../lib/utils";
 
-const PlantPicker = ({ activePlant, setActivePlant }) => {
+import plantPickerStyles from "./PlantPicker.module.css";
+
+const PlantPicker = ({ activePlant, setActivePlant, isDraggable = true }) => {
   const activePlantFriends = friends[activePlant.name] || [];
   const activePlantEnemies = enemies[activePlant.name] || [];
 
   if (!activePlant) return null;
 
   return (
-    <div className="activePlantContainer">
-      <div className="activePlant">
+    <div className={plantPickerStyles.activePlantContainer}>
+      <div className={plantPickerStyles.activePlant}>
         <strong>Active Plant</strong>{" "}
         {!!activePlant.name ? (
           <>
             <Plant
               name={activePlant.name}
               onClick={() => setActivePlant({ name: activePlant.name })}
+              isDraggable={isDraggable}
             />
             <p>
               {titleize(activePlant.name)}
@@ -46,6 +49,7 @@ const PlantPicker = ({ activePlant, setActivePlant }) => {
                   key={i}
                   name={name}
                   onClick={() => setActivePlant({ name })}
+                  isDraggable={isDraggable}
                 />
               ))
             : "No Friends"}
@@ -58,6 +62,7 @@ const PlantPicker = ({ activePlant, setActivePlant }) => {
                   key={i}
                   name={name}
                   onClick={() => setActivePlant({ name })}
+                  isDraggable={isDraggable}
                 />
               ))
             : "No Haters"}

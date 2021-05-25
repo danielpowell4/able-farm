@@ -1,0 +1,36 @@
+.activePlantContainer {
+  width: 100%;
+  padding: 10px;
+  margin: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.activePlantContainer strong {
+  margin-right: 1rem;
+}
+
+.activePlant {
+  display: flex;
+  align-items: center;
+}
+.activePlant p {
+  margin-left: 1rem;
+}
+
+.activePlantContainer ul {
+  margin-block: 0;
+  margin-inline: 0;
+  padding: 0;
+  padding-inline: 0;
+}
+.activePlantContainer ul li {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+.activePlantContainer ul li div {
+  padding-right: 0.5rem;
+}

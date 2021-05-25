@@ -126,7 +126,7 @@ const nameSvgMap = {
   tomato: Tomato,
 };
 
-const Plant = ({ id, name, onClick }) => {
+const DraggablePlant = ({ id, name, onClick }) => {
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: ItemTypes.PLANT,
@@ -157,9 +157,22 @@ const Plant = ({ id, name, onClick }) => {
   );
 };
 
-Plant.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.string, // used to create/update on drop
+const ClickOnlyPlant = ({ name, onClick }) => {
+  const SvgIcon = nameSvgMap[name] || FallbackIcon;
+
+  return (
+    <div
+      style={{
+        fontSize: 46, // for fallback
+        fontWeight: "bold",
+        cursor: "move",
+      }}
+    >
+      <SvgIcon style={{ height: 46, width: 46 }} onClick={onClick}/>
+    </div>
+  );
 };
+
+const Plant = ({ isDraggable = true, ...rest }) => isDraggable ? <DraggablePlant {...rest} /> : <ClickOnlyPlant {...rest} />
 
 export default Plant;
