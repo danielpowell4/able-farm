@@ -63,6 +63,15 @@ input {
   box-sizing: border-box;
 }
 
+.button, .link-button {
+  text-decoration: none;
+  padding: .5rem 1rem;
+  border: 2px solid var(--accent);
+  border-radius: .5rem;
+  background-color: var(--bgAlt);
+  text-weight: bold;
+}
+
 /* colors */
 :root {
   --bg: #effff7;;
