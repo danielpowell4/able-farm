@@ -83,15 +83,19 @@ const NewPageWrapper = () => {
           name: "",
           width: 8,
           height: 8,
-          users: [user.uid]
+          startingPlantName: "beets"
         }}
         onSubmit={async (values, actions) => {
           try {
-            await db.collection("gardens")
-                    .add(values)
-                    .then((gardenDoc) =>
-                      redirectTo(`/gardens/${gardenDoc.id}`)
-                    )
+            const gardenValues = {
+              name: values.name,
+              width: values.width,
+              height: values.height,
+              users: [user.uid],
+            }
+            const gardenDoc = await db.collection("gardens").add(gardenValues);
+            await gardenDoc.collection("plants").add({ name: values.startingPlantName, positionX: 1, positionY: 1 })
+            redirectTo(`/gardens/${gardenDoc.id}`)
           } catch (error) {
             const { status, errors } = error;
 
