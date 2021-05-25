@@ -3,11 +3,9 @@ import React, { useState } from "react";
 import { DndProvider, useDrop } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-import { Garden, Plant, Layout } from "../../components";
+import { Garden, PlantPicker, Layout } from "../../components";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../../base";
-import enemies from "../../data/enemies";
-import friends from "../../data/friends";
 
 import "./styles/ShowPage.css";
 
@@ -105,62 +103,13 @@ const ShowPage = ({
   };
   const plants = plantQuery.docs.map(d => ({ id: d.id, ...d.data() }));
 
-  const activePlantFriends = friends[activePlant.name] || [];
-  const activePlantEnemies = enemies[activePlant.name] || [];
-
   return (
     <Layout>
       <DndProvider backend={HTML5Backend}>
         <main>
           <header>
             <h1>{garden.name}</h1>
-            {!!activePlant && (
-              <div className="activePlantContainer">
-                <div className="activePlant">
-                  <strong>Active Plant</strong>{" "}
-                  {!!activePlant.name ? (
-                    <>
-                      <Plant
-                        name={activePlant.name}
-                        onClick={() => setActivePlant({ name: activePlant.name })}
-                      />
-                      <p>
-                        {activePlant.name[0].toUpperCase() +
-                          activePlant.name.substring(1)}
-                      </p>
-                    </>
-                  ) : (
-                    <p>None</p>
-                  )}
-                </div>
-                <ul>
-                  <li className="activePlant__friends">
-                    <strong>Friends</strong>{" "}
-                    {activePlantFriends.length
-                      ? activePlantFriends.map((name, i) => (
-                          <Plant
-                            key={i}
-                            name={name}
-                            onClick={() => setActivePlant({ name })}
-                          />
-                        ))
-                      : "No Friends"}
-                  </li>
-                  <li className="activePlant__enemies">
-                    <strong>Enemies</strong>{" "}
-                    {activePlantEnemies.length
-                      ? activePlantEnemies.map((name, i) => (
-                          <Plant
-                            key={i}
-                            name={name}
-                            onClick={() => setActivePlant({ name })}
-                          />
-                        ))
-                      : "No Haters"}
-                  </li>
-                </ul>
-              </div>
-            )}
+            <PlantPicker activePlant={activePlant} setActivePlant={setActivePlant} />
           </header>
           <div className="gardenContainer">
             <Garden

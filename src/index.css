@@ -69,7 +69,8 @@ input {
   border: 2px solid var(--accent);
   border-radius: .5rem;
   background-color: var(--bgAlt);
-  text-weight: bold;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* colors */
