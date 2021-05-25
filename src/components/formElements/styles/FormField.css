@@ -1,0 +1,15 @@
+.field__input {
+  width: 100%;
+}
+
+.field__hint {
+  grid-area: hint;
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 5px;
+  white-space: pre-line;
+}
+
+.field__error {
+  margin-left: 1rem;
+}

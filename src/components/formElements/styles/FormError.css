@@ -1,0 +1,10 @@
+.FormError {
+  color: var(--error);
+  margin: 0.25rem 0 0.5rem 0.5rem;
+}
+
+.FormError::before {
+  display: inline-block;
+  content: "🚫";
+  margin-right: 0.5rem;
+}
