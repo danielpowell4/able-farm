@@ -31,7 +31,10 @@ const PlantPicker = ({ activePlant, setActivePlant }) => {
             </button>
           </>
         ) : (
-          <p>None</p>
+          <select defaultValue="" onChange={event => setActivePlant({name: event.target.value})}>
+            <option hidden>Choose...</option>
+            {Object.keys(friends).map(plantName => <option key={plantName} value={plantName}>{titleize(plantName)}</option>)}
+          </select>
         )}
       </div>
       <ul>
