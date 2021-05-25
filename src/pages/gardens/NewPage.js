@@ -5,7 +5,7 @@ import {
   Text,
   Number,
 } from "../../components/formElements";
-import { Layout } from "../../components";
+import { Layout, PlantPicker } from "../../components";
 
 import { useError } from "../../hooks";
 import { UserContext } from "../../contexts/UserContext";
@@ -13,18 +13,22 @@ import { UserContext } from "../../contexts/UserContext";
 import { db } from "../../base";
 import { redirectTo } from "../../lib/utils";
 
+import newPageStyles from "./styles/NewPage.module.css";
+
 const NewGardenForm = ({
   // from Formik
   handleSubmit,
   isSubmitting,
+  values,
+  setFieldValue,
 
   // from us
   errorMsg
 }) => {
   return (
-    <form onSubmit={handleSubmit} className="new-garden-form">
-      <header className="new-garden-form__header">
-        <h1 className="title">New Garden</h1>
+    <form onSubmit={handleSubmit} className={newPageStyles.form}>
+      <header className={newPageStyles.form__header}>
+        <h1 className="title">Add Garden</h1>
       </header>
       <hr />
       {!!errorMsg && (
@@ -33,9 +37,9 @@ const NewGardenForm = ({
           <p style={{color: `var(--error)`}}>{errorMsg}</p>
         </div>
       )}
-      <div className="new-garden-form__form-fields">
+      <div className={newPageStyles.form__fields}>
         <div
-          className="grid-group"
+          className={newPageStyles.form__fields__gridGroup}
         >
           <FormEl>
             <Text name="name" label="Garden Name" required />
@@ -57,11 +61,15 @@ const NewGardenForm = ({
             />
           </FormEl>
         </div>
+        <div className={newPageStyles.form__fields__gridGroup}>
+          <h4 style={{ margin: ".5rem" }}>Pick First Plant</h4>
+          <PlantPicker isDraggable={false} activePlant={{name: values.startingPlantName}} setActivePlant={plant => setFieldValue("startingPlantName", plant?.name)} />
+        </div>
       </div>
 
       <hr />
 
-      <div className="new-garden-form__actions">
+      <div className={newPageStyles.form__actions}>
         <button
           className="button"
           type="submit"
@@ -87,6 +95,10 @@ const NewPageWrapper = () => {
         }}
         onSubmit={async (values, actions) => {
           try {
+            if (!values.startingPlantName) {
+              throw new Error("Starting plant required")
+            }
+
             const gardenValues = {
               name: values.name,
               width: values.width,

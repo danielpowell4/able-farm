@@ -1,0 +1,26 @@
+.form__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-gap: 2rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 660px) {
+  .form__fields {
+    grid-template-columns: 1fr;
+    grid-gap: 0;
+  }
+}
+
+.form__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form__actions > input[type="submit"],
+.form__actions > button,
+.form__actions > a {
+  margin: 0 0.5rem;
+}
