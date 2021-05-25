@@ -1,3 +1,13 @@
+.sectionHeader {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+}
+
+.sectionHeader h2 {
+  margin-right: 0.5rem;
+}
+
 .gardenList {
   margin: 1rem 0;
   padding: 0;

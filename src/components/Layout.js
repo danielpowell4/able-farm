@@ -9,6 +9,9 @@ const Menu = () => {
 
       <ol className={layoutStyles.sidebarMenu__list}>
         <li className={layoutStyles.sidebarMenu__list__item}>
+          <NavLink to="/gardens/new">Add Garden</NavLink>
+        </li>
+        <li className={layoutStyles.sidebarMenu__list__item}>
           <NavLink to="/logout">Log Out</NavLink>
         </li>
       </ol>

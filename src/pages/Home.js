@@ -43,8 +43,11 @@ const LoggedInHome = ({userId}) =>  {
         </span>{" "}
         Welcome Back!
       </h1>
-      <div>
-        <h2>Gardens</h2>
+      <section>
+        <header className={homeStyles.sectionHeader}>
+          <h2>Gardens</h2>
+          <Link to={`/gardens/new`} className={"link-button"}>Add +</Link>
+        </header>
         {isLoadingGardens ? (
           <p>Loading...</p>
         ) : gardens.length ? (
@@ -64,7 +67,7 @@ const LoggedInHome = ({userId}) =>  {
                 <Link to="/gardens/new">Start A Garden</Link>
               </p>
             )}
-      </div>
+      </section>
     </Layout>
   );
 }
