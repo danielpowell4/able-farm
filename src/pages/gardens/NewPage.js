@@ -74,7 +74,7 @@ const NewGardenForm = ({
           className="button"
           type="submit"
           disabled={isSubmitting}
-        >{isSubmitting ? "..." : "Add Garden"}</button>
+        >{isSubmitting ? "Adding..." : "Add Garden"}</button>
       </div>
     </form>
   );

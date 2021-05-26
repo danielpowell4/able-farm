@@ -21,6 +21,9 @@
   padding: 1.15rem;
   background-color: var(--bgAlt);
   min-width: 50%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 
   transition: box-shadow 500ms ease 0s, transform 500ms ease 0s;
   box-shadow: var(--boxShadow);
@@ -33,7 +36,7 @@
 
 .gardenList__card a {
   cursor: pointer;
-  width: 100%;
+  flex: 1;
   height: 100%;
 
   text-decoration: none;
@@ -41,4 +44,13 @@
 
 .gardenList__card h3, .gardenList__card p {
   margin: 0;
+}
+
+.gardenList__card__actions {
+  display: none;
+  list-style-type: none;
+}
+
+.gardenList__card:hover .gardenList__card__actions {
+  display: block;
 }

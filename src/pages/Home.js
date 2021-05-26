@@ -6,6 +6,8 @@ import homeStyles from "./Home.module.css";
 
 import { db } from "../base";
 
+import { useCollection } from "react-firebase-hooks/firestore";
+
 const LoggedOutHome = (_) => (
   <section>
     <h1>Home</h1>
@@ -14,26 +16,21 @@ const LoggedOutHome = (_) => (
   </section>
 );
 
-const LoggedInHome = ({userId}) =>  {
-  const [isLoadingGardens, setIsLoadingGardens] = React.useState(false);
-  const [gardens, setGardens] = React.useState([]);
-
-  React.useEffect(() => {
-    setIsLoadingGardens(() => true);
-
+const LoggedInHome = ({ userId }) =>  {
+  const [gardensQuery] = useCollection(
     db.collection("gardens")
       .where("users", "array-contains", userId)
-      .get()
-      .then((snapshot) => {
-        const gardens = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+  );
 
-        setGardens(() => gardens);
-        setIsLoadingGardens(() => false);
-      });
-  }, [userId])
+  const deleteGarden = gardenId => {
+    if (window.confirm("Are you really sure you want to remove this garden? This action is permanent and irreversible.")) {
+      db.collection("gardens")
+        .doc(gardenId)
+        .delete();
+    }
+  };
+
+  const gardens = gardensQuery?.docs?.map(d => ({ id: d.id, ...d.data() })) || [];
 
   return (
     <Layout>
@@ -48,7 +45,7 @@ const LoggedInHome = ({userId}) =>  {
           <h2>Gardens</h2>
           <Link to={`/gardens/new`} className={"link-button"}>Add +</Link>
         </header>
-        {isLoadingGardens ? (
+        {!gardensQuery ? (
           <p>Loading...</p>
         ) : gardens.length ? (
             <ul className={homeStyles.gardenList}>
@@ -58,6 +55,9 @@ const LoggedInHome = ({userId}) =>  {
                     <h3>{garden.name}</h3>
                     <p>{garden.height} x {garden.width} Plot</p>
                   </Link>
+                  <ul className={homeStyles.gardenList__card__actions}>
+                    <li><button className="button" onClick={() => deleteGarden(garden.id)}><span role="img" aria-label="Remove">🌋 Remove</span></button></li>
+                  </ul>
                 </li>
               ))}
             </ul>
