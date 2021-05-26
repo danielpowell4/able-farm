@@ -12,6 +12,7 @@ import {
   Signup,
   Home,
   GardenNewPage,
+  GardenEditPage,
   GardenShowPage,
 } from "./pages";
 
@@ -34,6 +35,7 @@ const App = _ => (
           <Switch>
             <PrivateRoute exact path="/" component={Home} />
             <PrivateRoute exact path="/gardens/new" component={GardenNewPage} />
+            <PrivateRoute exact path="/gardens/:gardenId/edit" component={GardenEditPage} />
             <PrivateRoute
               exact
               path="/gardens/:gardenId"

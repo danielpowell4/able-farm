@@ -56,7 +56,8 @@ const LoggedInHome = ({ userId }) =>  {
                     <p>{garden.height} x {garden.width} Plot</p>
                   </Link>
                   <ul className={homeStyles.gardenList__card__actions}>
-                    <li><button className="button" onClick={() => deleteGarden(garden.id)}><span role="img" aria-label="Remove">🌋 Remove</span></button></li>
+                    <li><Link to={`/gardens/${garden.id}/edit`} className="link-button"><span role="img" aria-label="Edit">🖍</span> Edit</Link></li>
+                    <li><button className="button" onClick={() => deleteGarden(garden.id)}><span role="img" aria-label="Remove">🌋</span> Remove</button></li>
                   </ul>
                 </li>
               ))}

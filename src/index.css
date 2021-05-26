@@ -51,7 +51,8 @@ h5,
 h6,
 li,
 div,
-p {
+p,
+button {
   font-family: "Fira Mono", sans-serif;
 }
 
@@ -67,10 +68,19 @@ input {
   text-decoration: none;
   padding: .5rem 1rem;
   border: 2px solid var(--accent);
+  line-height: 1.15;
   border-radius: .5rem;
   background-color: var(--bgAlt);
   font-weight: bold;
   cursor: pointer;
+}
+
+.link-button {
+  color: inherit;
+}
+
+.button {
+  font-size: inherit;
 }
 
 /* colors */

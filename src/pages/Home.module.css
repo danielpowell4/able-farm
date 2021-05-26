@@ -51,6 +51,12 @@
   list-style-type: none;
 }
 
+.gardenList__card__actions li {
+  margin-right: 0.5rem;
+}
+
 .gardenList__card:hover .gardenList__card__actions {
-  display: block;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
 }
